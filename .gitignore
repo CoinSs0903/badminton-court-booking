@@ -1,0 +1,17 @@
+# Binaries & compiled files
+*.class
+backend/bin/
+bin/
+
+# Temporary / Tunnel tools
+cloudflared.exe
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.iml
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store

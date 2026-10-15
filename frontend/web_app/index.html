@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
+    <title>ĐẶT LỊCH SÂN CẦU LÔNG 🏸 | Hệ Thống Đặt Sân Chuyên Nghiệp</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <!-- Google Fonts: Be Vietnam Pro & Inter (Chuẩn nét tiếng Việt, dễ nhìn, hiện đại) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="cgv-theme">
+
+    <!-- Main Navigation Header -->
+    <header class="cgv-header">
+        <div class="cgv-container header-flex">
+            <!-- Brand Logo -->
+            <a href="/" class="cgv-brand">
+                <div class="brand-emblem">
+                    <img src="logo.png" alt="Logo" class="emblem-img">
+                </div>
+                <div class="brand-titles">
+                    <span class="brand-main">ĐẶT LỊCH<span class="text-cgv-red"> CẦU LÔNG</span></span>
+                    <span class="brand-cinema-tag" id="headerRoleBadge">HỆ THỐNG SÂN TIÊU CHUẨN</span>
+                </div>
+            </a>
+
+            <!-- Header Nav Menu for USER -->
+            <nav class="cgv-nav" id="userNavMenu">
+                <button class="nav-item active" id="navBookingTab" onclick="switchCgvView('booking')">
+                    <i class="fa-solid fa-calendar-check"></i> ĐẶT LỊCH
+                </button>
+                <button class="nav-item" id="navTicketsTab" onclick="switchCgvView('tickets')">
+                    <i class="fa-solid fa-ticket"></i> VÉ CỦA TÔI <span class="nav-badge-count" id="ticketCountBadge">0</span>
+                </button>
+            </nav>
+
+            <!-- Actions & Portal Links -->
+            <div class="header-actions">
+                <!-- Customer Login / Session Box -->
+                <div id="custUnauthBox" class="cust-auth-btn-group">
+                    <button type="button" class="btn-customer-auth btn-login-pill" onclick="openCustomerAuthModal('login')" title="Đăng nhập tài khoản khách hàng">
+                        <i class="fa-solid fa-right-to-bracket text-gold"></i> Đăng Nhập
+                    </button>
+                    <button type="button" class="btn-customer-auth btn-customer-reg" onclick="openCustomerAuthModal('register')" title="Đăng ký tài khoản thành viên mới">
+                        <i class="fa-solid fa-user-plus text-sport-green"></i> Đăng Ký
+                    </button>
+                </div>
+                <div id="custAuthBox" style="display: none;">
+                    <div class="user-session-chip customer">
+                        <span class="user-avatar text-gold"><i class="fa-solid fa-circle-user"></i></span>
+                        <div class="user-info-compact">
+                            <strong id="custSessionName">Trần Anh Tuấn</strong>
+                            <span class="spec-badge">THÀNH VIÊN</span>
+                        </div>
+                        <button class="btn-logout" onclick="logoutCustomerAction()" title="Đăng xuất tài khoản">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <a href="owner/index.html" class="btn-portal-link" title="Cổng dành cho Đối tác Chủ Sân">
+                    <i class="fa-solid fa-building-user text-gold"></i> Chủ Sân
+                </a>
+                <a href="admin/index.html" class="btn-portal-link admin" title="Cổng dành cho Quản Trị Viên">
+                    <i class="fa-solid fa-shield-halved text-cgv-red"></i> Quản Trị
+                </a>
+                <button class="btn-cgv-refresh" id="btnRefreshData" title="Làm mới lịch từ máy chủ">
+                    <i class="fa-solid fa-rotate-right"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sub-Ribbon Banner -->
+    <div class="cgv-ribbon" id="userRibbon">
+        <div class="cgv-container ribbon-flex">
+            <div class="ribbon-text" id="ribbonRoleText">
+                <i class="fa-solid fa-trophy text-cgv-red"></i> HỆ THỐNG SÂN CẦU LÔNG TIÊU CHUẨN QUỐC TẾ • THẢM YONEX BWF • ĐÈN CHỐNG CHÓI 350 LUX
+            </div>
+            <div class="ribbon-date-picker" id="ribbonDatePickerWrap">
+                <i class="fa-regular fa-calendar-days text-gold"></i>
+                <span>Chọn ngày khác:</span>
+                <input type="date" id="bookingDatePicker" class="cgv-date-input">
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Workspace Container -->
+    <main class="cgv-main">
+        <!-- ========================================================
+             PHẦN 1: GIAO DIỆN KHÁCH HÀNG (USER / NGƯỜI DÙNG)
+             ======================================================== -->
+        <section class="role-workspace active" id="workspaceUser">
+            <!-- View 1.1: Booking View -->
+            <div class="cgv-view-section active" id="viewBooking">
+                <!-- ========================================================
+                     TRANG 1: CHỌN ĐỊA ĐIỂM, TÌM KIẾM SÂN & CHỌN LỊCH THI ĐẤU
+                     ======================================================== -->
+                <div id="bookingPage1FilterDate" class="booking-subpage">
+                    <!-- BỘ LỌC TÌM KIẾM SÂN (ĐỊA CHỈ, TÊN SÂN, LOẠI SÂN) -->
+                    <div class="booking-workflow-section" id="bookingWorkflowSection">
+                    <div class="cgv-container">
+                        <!-- Bảng Bộ Lọc (Filter & Search Hub) -->
+                        <div class="booking-filter-hub-card">
+                            <div class="bf-grid">
+                                <!-- Chọn Địa Chỉ (Tỉnh / Thành & Quận / Huyện) -->
+                                <div class="bf-col bf-location-group">
+                                    <label class="bf-label" for="selectProvince">
+                                        <i class="fa-solid fa-location-dot text-sport-green"></i> Địa Chỉ (Tỉnh / Thành & Quận):
+                                    </label>
+                                    <div class="bf-selects-row">
+                                        <div class="bf-select-wrap">
+                                            <i class="fa-solid fa-city bf-select-icon"></i>
+                                            <select class="bf-select" id="selectProvince" onchange="onProvinceChange()">
+                                                <option value="ALL">🌐 Tất cả Tỉnh / Thành</option>
+                                                <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
+                                                <option value="Hà Nội">Hà Nội</option>
+                                                <option value="Đà Nẵng">Đà Nẵng</option>
+                                                <option value="Bình Dương">Bình Dương</option>
+                                            </select>
+                                        </div>
+                                        <div class="bf-select-wrap">
+                                            <i class="fa-solid fa-map-pin bf-select-icon"></i>
+                                            <select class="bf-select" id="selectDistrict" onchange="onDistrictChange()">
+                                                <option value="ALL">📍 Tất cả Quận / Huyện</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tên Sân (Tìm kiếm trực tiếp) -->
+                                <div class="bf-col bf-search-group">
+                                    <label class="bf-label" for="courtSearchInput">
+                                        <i class="fa-solid fa-magnifying-glass text-gold"></i> Tìm Kiếm Tên Sân / Cơ Sở:
+                                    </label>
+                                    <div class="bf-search-box">
+                                        <i class="fa-solid fa-magnifying-glass bf-search-icon"></i>
+                                        <input type="text" class="bf-search-input" id="courtSearchInput" 
+                                            placeholder="Gõ tên sân, cơ sở, địa chỉ (VD: Sân 1, Yonex, Kỳ Hòa, Cầu Giấy...)" 
+                                            oninput="onSearchCourtInput(this.value)">
+                                        <button type="button" class="bf-search-clear" id="btnCourtSearchClear" onclick="clearCourtSearch()" title="Xóa tìm kiếm">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Loại Sân (VIP, PRO, STANDARD) -->
+                                <div class="bf-col bf-type-group">
+                                    <label class="bf-label" for="selectCourtType">
+                                        <i class="fa-solid fa-layer-group text-accent-blue"></i> Loại Sân Thi Đấu:
+                                    </label>
+                                    <div class="bf-select-wrap">
+                                        <i class="fa-solid fa-layer-group bf-select-icon"></i>
+                                        <select class="bf-select" id="selectCourtType" onchange="setCourtTypeFilter(this.value)">
+                                            <option value="ALL">🏸 Tất cả loại sân</option>
+                                            <option value="VIP">👑 Sân VIP (Thảm Yonex BWF)</option>
+                                            <option value="PRO">🔥 Sân Pro (Thảm Enlio Đỏ)</option>
+                                            <option value="STANDARD">🛡️ Sân Tiêu Chuẩn (Thảm PVC)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Footer Bảng: Thống kê kết quả & phím tắt -->
+                            <div class="bf-footer-row">
+                                <div class="bf-stats">
+                                    <span class="bf-stat-badge" id="courtMatchBadge">
+                                        <i class="fa-solid fa-circle-check text-sport-green"></i> 11/11 sân phù hợp
+                                    </span>
+                                    <span class="bf-active-summary" id="bfFilterSummaryText">
+                                        Hệ thống hiển thị đầy đủ các cơ sở sân tại Việt Nam
+                                    </span>
+                                </div>
+                                <div class="bf-quick-jumps">
+                                    <button type="button" class="bf-jump-btn" onclick="scrollToSection('dateCarouselWrap')">
+                                        <i class="fa-regular fa-calendar-days text-gold"></i> Chọn Ngày Thi Đấu
+                                    </button>
+                                    <button type="button" class="bf-jump-btn btn-cta-fast-slots" onclick="proceedToSlotsPage()">
+                                        <i class="fa-solid fa-arrow-right text-sport-green"></i> Xem Giờ Sân & Đặt Chỗ
+                                    </button>
+                                    <button type="button" class="bf-reset-btn" onclick="resetAllFilters()" title="Đặt lại toàn bộ bộ lọc">
+                                        <i class="fa-solid fa-arrow-rotate-left"></i> Đặt lại bộ lọc
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date Horizontal Carousel (Chọn Ngày Thi Đấu Hàng Ngang) -->
+                <!-- Date Horizontal Carousel (Chọn Ngày Thi Đấu Hàng Ngang - Tự Chọn Lịch Tất Cả Các Ngày) -->
+                <div class="date-carousel-wrap" id="dateCarouselWrap">
+                    <div class="cgv-container">
+                        <div class="date-carousel-card">
+                            <!-- Header Lịch Hàng Ngang -->
+                            <div class="date-carousel-header">
+                                <div class="date-carousel-title-group">
+                                    <div class="date-carousel-badge">
+                                        <i class="fa-solid fa-calendar-days text-sport-green"></i> LỊCH THI ĐẤU
+                                    </div>
+                                    <h3 class="date-carousel-heading">CHỌN NGÀY THI ĐẤU</h3>
+                                    
+                                    <!-- Nút mở lịch chọn bất kỳ ngày nào trong tất cả các ngày -->
+                                    <div class="date-picker-interactive-box" title="Nhấp để tự chọn ngày bất kỳ trong lịch">
+                                        <button type="button" class="btn-interactive-datepicker" onclick="triggerNativeDatePicker()">
+                                            <i class="fa-solid fa-calendar-alt text-sport-green"></i>
+                                            <span id="dateCarouselMonthTag">THÁNG 10 • 2026</span>
+                                            <i class="fa-solid fa-chevron-down caret-icon"></i>
+                                        </button>
+                                        <input type="date" id="carouselDateNativePicker" class="carousel-native-input" onchange="onCustomDatePicked(this.value)">
+                                    </div>
+                                </div>
+
+                                <div class="date-carousel-actions">
+                                    <div class="date-shortcuts-row">
+                                        <!-- Nút Tự chọn ngày nổi bật -->
+                                        <button type="button" class="btn-date-shortcut btn-choose-any-date" onclick="triggerNativeDatePicker()" title="Tự chọn ngày bất kỳ từ lịch">
+                                            <i class="fa-regular fa-calendar-plus text-sport-cyan"></i> Tự chọn ngày
+                                        </button>
+
+                                        <!-- Điều hướng tháng -->
+                                        <button type="button" class="btn-date-shortcut btn-month-nav" onclick="jumpMonth(-1)" title="Xem tháng trước">
+                                            <i class="fa-solid fa-angles-left"></i>
+                                        </button>
+                                        <button type="button" class="btn-date-shortcut btn-month-nav" onclick="jumpMonth(1)" title="Xem tháng sau">
+                                            <i class="fa-solid fa-angles-right"></i>
+                                        </button>
+
+                                        <!-- Phím tắt nhanh -->
+                                        <button type="button" class="btn-date-shortcut" id="btnDateShortcutToday" onclick="quickSelectRelativeDay(0)">
+                                            <i class="fa-solid fa-calendar-day text-sport-green"></i> Hôm nay
+                                        </button>
+                                        <button type="button" class="btn-date-shortcut" id="btnDateShortcutTomorrow" onclick="quickSelectRelativeDay(1)">
+                                            Ngày mai
+                                        </button>
+                                        <button type="button" class="btn-date-shortcut" id="btnDateShortcutWeekend" onclick="quickSelectThisWeekend()">
+                                            <i class="fa-solid fa-bolt text-sport-cyan"></i> Cuối tuần
+                                        </button>
+                                    </div>
+
+                                    <div class="date-nav-arrows">
+                                        <button type="button" class="btn-date-arrow" onclick="scrollDateCarousel(-1)" title="Cuộn lùi ngày trước">
+                                            <i class="fa-solid fa-chevron-left"></i>
+                                        </button>
+                                        <button type="button" class="btn-date-arrow" onclick="scrollDateCarousel(1)" title="Cuộn tới ngày tiếp theo">
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dải Thẻ Ngày Hàng Ngang -->
+                            <div class="date-carousel-track-wrapper">
+                                <div class="date-carousel-list" id="dateCarouselList">
+                                    <!-- Dynamic date-tab-cards rendered horizontally by JS -->
+                                </div>
+                            </div>
+
+                            <!-- Thanh Tùy Chọn Lịch: Đặt Ngày Đơn vs Đặt Định Kỳ Tất Cả Các Ngày -->
+                            <div class="date-booking-mode-bar">
+                                <div class="mode-pills-wrap">
+                                    <button type="button" class="btn-mode-pill active" id="btnModeSingleDay" onclick="setBookingDateMode('single')">
+                                        <i class="fa-solid fa-calendar-check text-sport-green"></i> Đặt lịch theo ngày đã chọn (<span id="modeSelectedDateText">14/10/2026</span>)
+                                    </button>
+                                    <button type="button" class="btn-mode-pill" id="btnModeRecurring" onclick="setBookingDateMode('recurring')">
+                                        <i class="fa-solid fa-repeat text-sport-cyan"></i> Đặt cố định / Tất cả các ngày trong tuần
+                                    </button>
+                                </div>
+                                <div class="recurring-options-panel" id="recurringOptionsPanel" style="display: none;">
+                                    <div class="recurring-header">
+                                        <span class="rc-label"><i class="fa-solid fa-bolt text-gold"></i> Chọn các ngày lặp lại hàng tuần:</span>
+                                        <button type="button" class="rc-quick-btn" onclick="toggleAllRecurringDays(true)">Chọn tất cả các ngày (T2-CN)</button>
+                                        <button type="button" class="rc-quick-btn" onclick="toggleAllRecurringDays(false)">Bỏ chọn</button>
+                                    </div>
+                                    <div class="recurring-weekdays-row">
+                                        <label class="rc-day-checkbox"><input type="checkbox" name="rcDay" value="2" checked onchange="updateBottomBar()"> <span>Thứ 2</span></label>
+                                        <label class="rc-day-checkbox"><input type="checkbox" name="rcDay" value="3" checked onchange="updateBottomBar()"> <span>Thứ 3</span></label>
+                                        <label class="rc-day-checkbox"><input type="checkbox" name="rcDay" value="4" checked onchange="updateBottomBar()"> <span>Thứ 4</span></label>
+                                        <label class="rc-day-checkbox"><input type="checkbox" name="rcDay" value="5" checked onchange="updateBottomBar()"> <span>Thứ 5</span></label>
+                                        <label class="rc-day-checkbox"><input type="checkbox" name="rcDay" value="6" checked onchange="updateBottomBar()"> <span>Thứ 6</span></label>
+                                        <label class="rc-day-checkbox weekend"><input type="checkbox" name="rcDay" value="7" checked onchange="updateBottomBar()"> <span>Thứ 7</span></label>
+                                        <label class="rc-day-checkbox weekend"><input type="checkbox" name="rcDay" value="CN" checked onchange="updateBottomBar()"> <span>Chủ Nhật</span></label>
+                                    </div>
+                                    <div class="recurring-duration-row">
+                                        <span class="rc-dur-label">Thời hạn đặt cố định:</span>
+                                        <label class="rc-radio-label"><input type="radio" name="rcDuration" value="1" checked onchange="updateBottomBar()"> <span>1 Tuần</span></label>
+                                        <label class="rc-radio-label"><input type="radio" name="rcDuration" value="2" onchange="updateBottomBar()"> <span>2 Tuần</span></label>
+                                        <label class="rc-radio-label"><input type="radio" name="rcDuration" value="4" onchange="updateBottomBar()"> <span>1 Tháng</span></label>
+                                        <label class="rc-radio-label"><input type="radio" name="rcDuration" value="12" onchange="updateBottomBar()"> <span>3 Tháng (Quý)</span></label>
+                                    </div>
+                                    <div class="recurring-note">
+                                        <i class="fa-solid fa-circle-info text-sport-green"></i> Khung giờ bạn chọn bên dưới sẽ được tự động giữ chỗ cố định cho tất cả các ngày đã đánh dấu trong suốt thời hạn.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- /cgv-container -->
+                </div> <!-- /date-carousel-wrap -->
+
+                <!-- Nút Chuyển Trang: Hoàn Thành Chọn Lịch ➔ Sang Trang Chọn Giờ Sân -->
+                <div class="cgv-container page1-proceed-container">
+                    <div class="page1-proceed-card">
+                        <div class="p1-summary-left">
+                            <span class="p1-badge"><i class="fa-solid fa-calendar-check text-sport-green"></i> ĐÃ CHỌN LỊCH THI ĐẤU</span>
+                            <h4 class="p1-date-headline" id="p1SelectedDateHeadline">Thứ Tư, 14 Tháng 10, 2026</h4>
+                            <p class="p1-filter-sub" id="p1FilterSub">Đang áp dụng bộ lọc • Nhấn tiếp tục để xem toàn bộ danh sách sân & khung giờ thi đấu</p>
+                        </div>
+                        <button type="button" class="btn-proceed-to-slots" onclick="proceedToSlotsPage()">
+                            <span>TIẾP TỤC: XEM GIỜ SÂN & ĐẶT CHỖ</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div> <!-- /bookingPage1FilterDate -->
+
+                <!-- ========================================================
+                     TRANG 2: DANH SÁCH SÂN & KHUNG GIỜ THEO LỚP CA (CHỈ HIỆN KHI XONG CHỌN LỊCH)
+                     ======================================================== -->
+                <div id="bookingPage2Slots" class="booking-subpage" style="display: none;">
+                    <!-- Thanh Tiêu Đề Điều Hướng & Tóm Tắt Trang 2 -->
+                    <div class="page2-top-header">
+                        <div class="cgv-container page2-header-flex">
+                            <button type="button" class="btn-back-to-p1" onclick="backToFilterDatePage()">
+                                <i class="fa-solid fa-arrow-left"></i> Quay lại đổi ngày / bộ lọc
+                            </button>
+                            <div class="page2-summary-tags">
+                                <span class="p2-tag-date" id="p2TagDate" onclick="backToFilterDatePage()" title="Bấm để đổi ngày thi đấu" style="cursor: pointer;">
+                                    <i class="fa-regular fa-calendar-days text-sport-green"></i> <strong id="p2TagDateText">14/10/2026</strong> <i class="fa-solid fa-pen-to-square" style="font-size: 10px; margin-left: 4px; opacity: 0.7;"></i>
+                                </span>
+                                <span class="p2-tag-loc" id="p2TagLoc">
+                                    <i class="fa-solid fa-location-dot text-gold"></i> <span id="p2TagLocText">Tất cả địa chỉ</span>
+                                </span>
+                                <span class="p2-tag-type" id="p2TagType">
+                                    <i class="fa-solid fa-trophy text-sport-cyan"></i> <span id="p2TagTypeText">Tất cả loại sân</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Showtime List (Trang 2) -->
+                    <div class="cgv-container content-grid-booking">
+                    <div class="courts-cinema-list">
+                        <div class="cinema-filter-header">
+                            <div class="filter-title">
+                                <i class="fa-solid fa-layer-group text-pastel-rose"></i> DANH SÁCH SÂN & KHUNG GIỜ THEO LỚP CA
+                            </div>
+                            <div class="legend-inline">
+                                <span class="lg-badge avail"><span class="box"></span> Còn trống</span>
+                                <span class="lg-badge sel"><span class="box"></span> Đang chọn</span>
+                                <span class="lg-badge peak"><span class="box"></span> ⚡ Giờ vàng (+25k)</span>
+                                <span class="lg-badge soldout"><span class="box"></span> Hết chỗ</span>
+                            </div>
+                        </div>
+
+                        <!-- Lọc theo từng Lớp Ca (Session Layer Switcher) -->
+                        <div class="session-filter-toolbar">
+                            <span class="sft-label"><i class="fa-solid fa-layer-group"></i> Chọn lớp ca:</span>
+                            <div class="session-filter-pills" id="sessionFilterPills">
+                                <button class="btn-session-pill active" data-session="ALL" onclick="setSessionFilter('ALL')">
+                                    <i class="fa-solid fa-border-all"></i> Tất cả lớp (16 ca)
+                                </button>
+                                <button class="btn-session-pill" data-session="early-morning" onclick="setSessionFilter('early-morning')">
+                                    <i class="fa-solid fa-mug-hot" style="color: #FFA000;"></i> Sáng sớm (06h - 08h)
+                                </button>
+                                <button class="btn-session-pill" data-session="morning" onclick="setSessionFilter('morning')">
+                                    <i class="fa-regular fa-sun" style="color: #FFD600;"></i> Sáng (08h - 11h)
+                                </button>
+                                <button class="btn-session-pill" data-session="noon" onclick="setSessionFilter('noon')">
+                                    <i class="fa-solid fa-sun" style="color: #00E676;"></i> Trưa (11h - 14h)
+                                </button>
+                                <button class="btn-session-pill" data-session="afternoon" onclick="setSessionFilter('afternoon')">
+                                    <i class="fa-solid fa-cloud-sun" style="color: #B388FF;"></i> Chiều (14h - 17h)
+                                </button>
+                                <button class="btn-session-pill" data-session="evening" onclick="setSessionFilter('evening')">
+                                    <i class="fa-solid fa-bolt" style="color: #00E5FF;"></i> Tối • Peak (17h - 20h)
+                                </button>
+                                <button class="btn-session-pill" data-session="night" onclick="setSessionFilter('night')">
+                                    <i class="fa-solid fa-moon" style="color: #7C4DFF;"></i> Đêm (20h - 22h)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Danh sách sân con (Phòng chiếu) -->
+                        <div class="cinema-court-cards" id="cinemaCourtCards">
+                            <!-- Rendered by JS -->
+                        </div>
+
+                        <!-- Dịch Vụ & Tiện Ích Theo Bố Cục Lớp -->
+                        <div class="cgv-combos-section" id="combosSection">
+                            <div class="section-title-cgv">
+                                <i class="fa-solid fa-boxes-stacked text-cgv-red"></i> DỊCH VỤ & TIỆN ÍCH THEO LỚP TẠI SÂN
+                            </div>
+                            <p class="section-sub-cgv">Chọn các loại cầu, vợt thi đấu, nước giải khát & cuốn vợt - nhận ngay tại quầy lễ tân khi check-in</p>
+                            
+                            <div class="service-layers-container" id="combosGrid">
+                                <!-- Rendered by JS: Lớp Cầu lông, Lớp Thuê vợt, Lớp Nước, Lớp Cuốn vợt -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- /bookingPage2Slots -->
+        </div> <!-- /viewBooking -->
+
+            <!-- View 1.2: My Tickets View -->
+            <div class="cgv-view-section" id="viewTickets">
+                <div class="cgv-container">
+                    <div class="tickets-hero-banner">
+                        <div class="th-title">
+                            <i class="fa-solid fa-ticket-simple text-cgv-red"></i> CUỐNG VÉ ĐIỆN TỬ CỦA BẠN (E-TICKET)
+                        </div>
+                        <p class="th-sub">Xuất trình mã QR vé tại quầy lễ tân để check-in vào sân</p>
+                    </div>
+                    <div class="ticket-stubs-grid" id="ticketStubsGrid">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             PHẦN 2: GIAO DIỆN CHỦ SÂN (YARD OWNER)
+             ======================================================== -->
+        <section class="role-workspace" id="workspaceOwner">
+            <div class="cgv-container">
+                <!-- Owner Banner Header -->
+                <div class="owner-header-card">
+                    <div class="oh-left">
+                        <div class="oh-badge"><i class="fa-solid fa-building-user"></i> BẢNG ĐIỀU KHIỂN CHỦ SÂN</div>
+                        <h2 class="oh-title" id="ownerFullNameDisplay">Nguyễn Văn Đạt (Chủ Sân 1 & Sân 2)</h2>
+                        <div class="oh-sub">
+                            <span><i class="fa-solid fa-phone"></i> Hotline: <strong>0902 222 222</strong></span>
+                            <span class="sep">•</span>
+                            <span><i class="fa-solid fa-trophy text-gold"></i> Các sân phụ trách: <strong id="ownerCourtsListDisplay">Sân 1 (VIP), Sân 2 (Pro)</strong></span>
+                        </div>
+                    </div>
+                    <div class="oh-right">
+                        <!-- Fast Check-in Box -->
+                        <div class="quick-checkin-box">
+                            <span class="qc-label"><i class="fa-solid fa-qrcode text-cgv-red"></i> Quét / Nhập Mã Check-in Khách:</span>
+                            <div class="qc-input-wrap">
+                                <input type="text" id="inputOwnerCheckInCode" placeholder="Ví dụ: BDM-261013-3680" class="qc-input">
+                                <button class="btn-qc-checkin" onclick="ownerCheckInAction()">Check-in</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Owner Stats Cards -->
+                <div class="stats-overview-grid">
+                    <div class="stat-box-card">
+                        <div class="sb-icon text-gold"><i class="fa-solid fa-coins"></i></div>
+                        <div class="sb-info">
+                            <span class="sb-label">Tổng Doanh Thu</span>
+                            <span class="sb-number text-gold" id="statOwnerRevenue">0 ₫</span>
+                        </div>
+                    </div>
+                    <div class="stat-box-card">
+                        <div class="sb-icon text-cgv-red"><i class="fa-solid fa-ticket"></i></div>
+                        <div class="sb-info">
+                            <span class="sb-label">Lượt Đặt Sân</span>
+                            <span class="sb-number" id="statOwnerBookings">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-box-card">
+                        <div class="sb-icon text-green"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="sb-info">
+                            <span class="sb-label">Khách Đã Check-in</span>
+                            <span class="sb-number" id="statOwnerCheckedIn">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-box-card">
+                        <div class="sb-icon text-blue"><i class="fa-solid fa-layer-group"></i></div>
+                        <div class="sb-info">
+                            <span class="sb-label">Sân Đang Quản Lý</span>
+                            <span class="sb-number" id="statOwnerCourtCount">2 sân</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Courts Management Section -->
+                <div class="owner-section-box">
+                    <div class="osb-header">
+                        <div class="osb-title"><i class="fa-solid fa-sliders text-cgv-red"></i> Trạng Thái Sân Cầu Lông (Bật / Tắt Bảo Trì)</div>
+                    </div>
+                    <div class="owner-courts-grid" id="ownerCourtsListGrid">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- Bookings at Owner's Courts -->
+                <div class="owner-section-box">
+                    <div class="osb-header">
+                        <div class="osb-title"><i class="fa-solid fa-list-check text-cgv-red"></i> Danh Sách Đơn Đặt Sân Cần Phục Vụ</div>
+                        <span class="osb-sub">Các đơn đặt tương ứng với các sân thuộc quyền quản lý</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="cgv-table">
+                            <thead>
+                                <tr>
+                                    <th>Mã Vé</th>
+                                    <th>Sân</th>
+                                    <th>Ngày Chơi</th>
+                                    <th>Khung Giờ</th>
+                                    <th>Khách Hàng & SĐT</th>
+                                    <th>Tổng Tiền</th>
+                                    <th>Trạng Thái</th>
+                                    <th>Hành Động</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ownerBookingsTableBody">
+                                <!-- Rendered by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================
+             PHẦN 3: GIAO DIỆN QUẢN TRỊ VIÊN (SYSTEM ADMIN)
+             ======================================================== -->
+        <section class="role-workspace" id="workspaceAdmin">
+            <div class="cgv-container">
+                <!-- Admin Banner Header -->
+                <div class="admin-header-card">
+                    <div class="ah-left">
+                        <div class="ah-badge"><i class="fa-solid fa-crown text-gold"></i> CỔNG QUẢN TRỊ VIÊN HỆ THỐNG (ADMIN)</div>
+                        <h2 class="ah-title">Quản Lý Toàn Bộ Hệ Thống & Cấp Tài Khoản Chủ Sân</h2>
+                        <p class="ah-sub">Tạo tài khoản quản lý sân cho đối tác, phân quyền quản trị sân con và giám sát toàn sàn.</p>
+                    </div>
+                </div>
+
+                <!-- Admin Overall Stats -->
+                <div class="stats-overview-grid">
+                    <div class="stat-box-card admin-stat">
+                        <div class="sb-icon text-gold"><i class="fa-solid fa-user-shield"></i></div>
+                        <div class="sb-info">
+                            <span class="sb-label">Tổng Chủ Sân (Owners)</span>
+                            <span class="sb-number text-gold" id="statAdminOwnerCount">2</span>
+                        </div>
+                    </div>
+                    <div class="stat-box-card admin-stat">
+                        <div class="sb-icon text-cgv-red"><i class="fa-solid fa-trophy"></i></div>
+                        <div class="sb-info">
+                            <span class="sb-label">Tổng Cụm Sân Cầu Lông</span>
+                            <span class="sb-number" id="statAdminCourtCount">4 sân</span>
+                        </div>
+                    </div>
+                    <div class="stat-box-card admin-stat">
+                        <div class="sb-icon text-green"><i class="fa-solid fa-receipt"></i></div>
+                        <div class="sb-info">
+                            <span class="sb-label">Tổng Vé Đã Đặt Toàn Sàn</span>
+                            <span class="sb-number" id="statAdminTotalBookings">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-box-card admin-stat">
+                        <div class="sb-icon text-gold"><i class="fa-solid fa-sack-dollar"></i></div>
+                        <div class="sb-info">
+                            <span class="sb-label">Tổng Doanh Thu Sàn</span>
+                            <span class="sb-number text-gold" id="statAdminTotalRevenue">0 ₫</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CREATE OWNER ACCOUNT FORM (CHỨC NĂNG CHÍNH CỦA ADMIN) -->
+                <div class="admin-form-card">
+                    <div class="afc-header">
+                        <div class="afc-title"><i class="fa-solid fa-user-plus text-cgv-red"></i> Tạo Tài Khoản Cho Chủ Sân Mới (Partner Owner)</div>
+                        <p class="afc-desc">Nhập thông tin đối tác và chọn các sân thi đấu bàn giao cho chủ sân quản lý</p>
+                    </div>
+
+                    <form id="formAdminCreateOwner" class="admin-create-form" onsubmit="return false;">
+                        <div class="form-grid-2">
+                            <div class="cgv-input-group">
+                                <label><i class="fa-solid fa-user-tag"></i> Tên đăng nhập (Username) (*):</label>
+                                <input type="text" id="adminNewUsername" class="cgv-input" placeholder="Ví dụ: owner3" required>
+                            </div>
+                            <div class="cgv-input-group">
+                                <label><i class="fa-solid fa-key"></i> Mật khẩu khởi tạo (*):</label>
+                                <input type="password" id="adminNewPassword" class="cgv-input" placeholder="Nhập mật khẩu..." value="owner123" required>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-3">
+                            <div class="cgv-input-group">
+                                <label><i class="fa-solid fa-id-card"></i> Họ và tên chủ sân (*):</label>
+                                <input type="text" id="adminNewFullName" class="cgv-input" placeholder="Ví dụ: Phạm Minh Tuấn" required>
+                            </div>
+                            <div class="cgv-input-group">
+                                <label><i class="fa-solid fa-phone"></i> Số điện thoại:</label>
+                                <input type="tel" id="adminNewPhone" class="cgv-input" placeholder="0909 888 777" required>
+                            </div>
+                            <div class="cgv-input-group">
+                                <label><i class="fa-solid fa-envelope"></i> Email đối tác:</label>
+                                <input type="email" id="adminNewEmail" class="cgv-input" placeholder="tuan.owner@badminton.vn">
+                            </div>
+                        </div>
+
+                        <!-- Gán sân quản lý -->
+                        <div class="cgv-input-group">
+                            <label><i class="fa-solid fa-medal text-gold"></i> Gán quyền quản lý sân cho chủ sân này (*):</label>
+                            <div class="court-checkboxes-grid" id="adminCourtCheckboxes">
+                                <!-- Rendered by JS: Sân 1, Sân 2, Sân 3, Sân 4 -->
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-admin-create-submit" id="btnAdminSubmitCreateOwner">
+                            <i class="fa-solid fa-plus-circle"></i> TẠO TÀI KHOẢN CHỦ SÂN & CẤP QUYỀN
+                        </button>
+                    </form>
+                </div>
+
+                <!-- LIST OF REGISTERED OWNERS -->
+                <div class="owner-section-box">
+                    <div class="osb-header">
+                        <div class="osb-title"><i class="fa-solid fa-users-gear text-cgv-red"></i> Danh Sách Các Chủ Sân Trong Hệ Thống</div>
+                        <span class="osb-sub">Danh sách các đối tác đã được cấp tài khoản điều hành</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="cgv-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Họ Tên Chủ Sân</th>
+                                    <th>SĐT / Email</th>
+                                    <th>Sân Được Giao Quản Lý</th>
+                                    <th>Ngày Cấp Tài Khoản</th>
+                                    <th>Vai Trò</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminOwnersTableBody">
+                                <!-- Rendered by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- CGV Sticky Bottom Booking Bar (Chỉ hiển thị ở vai trò USER) -->
+    <div class="cgv-bottom-bar" id="cgvBottomBar">
+        <div class="cgv-container bottom-bar-inner">
+            <div class="bb-left-info">
+                <div class="bb-movie-name">
+                    <span class="badge-cgv-mini">BADMINTON</span>
+                    <strong id="bbCourtName">Chưa chọn sân & giờ</strong>
+                </div>
+                <div class="bb-meta">
+                    <span><i class="fa-regular fa-calendar"></i> <span id="bbDate">-</span></span>
+                    <span class="sep">•</span>
+                    <span><i class="fa-regular fa-clock"></i> <span id="bbSlots">Chưa chọn suất</span></span>
+                    <span class="sep">•</span>
+                    <span><i class="fa-solid fa-cube"></i> <span id="bbCombos">Không có combo</span></span>
+                </div>
+            </div>
+
+            <div class="bb-right-action">
+                <div class="bb-price-wrap">
+                    <span class="bb-price-label">Tổng thanh toán:</span>
+                    <span class="bb-price-val" id="bbTotalPrice">0 ₫</span>
+                </div>
+                <button class="btn-cgv-primary" id="btnOpenCgvCheckout" disabled>
+                    ĐẶT VÉ NGAY <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CGV Checkout & Payment Modal -->
+    <div class="cgv-modal-overlay" id="checkoutModal">
+        <div class="cgv-modal-card">
+            <!-- Modal Header CGV Red -->
+            <div class="cgv-modal-header">
+                <span class="m-title-cgv"><i class="fa-solid fa-ticket text-gold"></i> XÁC NHẬN ĐẶT SÂN & XUẤT VÉ ĐIỆN TỬ</span>
+                <button class="btn-cgv-close" id="btnCloseCheckoutModal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="cgv-modal-body">
+                <!-- Film / Court Ticket Preview Stub -->
+                <div class="cinema-ticket-preview">
+                    <div class="ct-left">
+                        <div class="ct-brand">HỆ THỐNG SÂN CẦU LÔNG CHUYÊN NGHIỆP</div>
+                        <div class="ct-title" id="mCourtName">SÂN 1 (VIP - THẢM YONEX BWF)</div>
+                        <div class="ct-info-row">
+                            <span>Ngày chơi:</span> <strong id="mDate">-</strong>
+                        </div>
+                        <div class="ct-info-row">
+                            <span>Suất giờ:</span> <strong class="text-gold" id="mSlots">-</strong>
+                        </div>
+                        <div class="ct-info-row">
+                            <span>Combo:</span> <span id="mCombos">Không có</span>
+                        </div>
+                    </div>
+                    <div class="ct-divider">
+                        <span class="notch notch-top"></span>
+                        <span class="notch notch-bottom"></span>
+                    </div>
+                    <div class="ct-right">
+                        <span class="ct-price-label">TỔNG TIỀN</span>
+                        <span class="ct-price-num" id="mTotalAmount">0 ₫</span>
+                        <span class="ct-seat-type">VIP CLASS</span>
+                    </div>
+                </div>
+
+                <!-- Customer Form (CGV Member info) -->
+                <form id="cgvCheckoutForm" class="cgv-form" onsubmit="return false;">
+                    <div id="checkoutMemberPrompt" class="checkout-member-callout">
+                        <div class="cm-callout-text">
+                            <i class="fa-solid fa-gift text-gold"></i>
+                            <span>Thành viên đặt sân? <strong>Đăng ký tài khoản</strong> để nhận ưu đãi và tra cứu vé dễ dàng!</span>
+                        </div>
+                        <div class="cm-callout-actions">
+                            <button type="button" class="btn-cm-action btn-cm-reg" onclick="openCustomerAuthModal('register')">
+                                <i class="fa-solid fa-user-plus"></i> Đăng Ký
+                            </button>
+                            <button type="button" class="btn-cm-action btn-cm-login" onclick="openCustomerAuthModal('login')">
+                                <i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập
+                            </button>
+                        </div>
+                    </div>
+                    <div class="cgv-form-row">
+                        <div class="cgv-input-group">
+                            <label><i class="fa-solid fa-user"></i> Tên người chơi (*):</label>
+                            <input type="text" id="custName" class="cgv-input" placeholder="Nguyễn Văn Hùng" value="Nguyễn Văn Hùng" required>
+                        </div>
+                        <div class="cgv-input-group">
+                            <label><i class="fa-solid fa-phone"></i> Số điện thoại (*):</label>
+                            <input type="tel" id="custPhone" class="cgv-input" placeholder="0908 123 456" value="0908123456" required>
+                        </div>
+                    </div>
+
+                    <!-- Payment Options -->
+                    <div class="cgv-payment-selector">
+                        <label class="cgv-pay-card active">
+                            <input type="radio" name="payMethod" value="QR_VNPAY" checked>
+                            <div class="pay-inner">
+                                <i class="fa-solid fa-qrcode text-cgv-red"></i>
+                                <span>Quét QR Chuyển Khoản</span>
+                            </div>
+                        </label>
+                        <label class="cgv-pay-card">
+                            <input type="radio" name="payMethod" value="MOMO">
+                            <div class="pay-inner">
+                                <i class="fa-solid fa-wallet text-pink"></i>
+                                <span>Ví MoMo</span>
+                            </div>
+                        </label>
+                        <label class="cgv-pay-card">
+                            <input type="radio" name="payMethod" value="TIEN_MAT">
+                            <div class="pay-inner">
+                                <i class="fa-solid fa-money-bill-wave text-gold"></i>
+                                <span>Tiền mặt tại quầy lễ tân</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- QR Display Box -->
+                    <div class="cgv-qr-box" id="qrDisplayBox">
+                        <div class="qr-img-card">
+                            <img src="" alt="Mã QR Thanh Toán" id="dynamicQrImg">
+                        </div>
+                        <div class="qr-bank-details">
+                            <div class="bank-name">Ngân hàng MBBank • Chuyển khoản 24/7</div>
+                            <div class="acc-info">Số tài khoản: <strong>0908123456</strong></div>
+                            <div class="note-info">Nội dung CK: <strong class="text-gold" id="qrTransferNote">DATLICH</strong></div>
+                            <div class="qr-instruction">Quét mã QR bằng App ngân hàng hoặc MoMo để thanh toán</div>
+                        </div>
+                    </div>
+
+                    <!-- Confirm Button -->
+                    <button type="submit" class="btn-cgv-submit" id="btnFinishBooking">
+                        <i class="fa-solid fa-circle-check"></i> XÁC NHẬN THANH TOÁN & IN VÉ ĐIỆN TỬ
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- E-Ticket Stub Success Modal (CGV Cinema Ticket) -->
+    <div class="cgv-modal-overlay" id="ticketSuccessModal">
+        <div class="cgv-modal-card ticket-success-wrapper">
+            <div class="cgv-modal-header success">
+                <span class="m-title-cgv"><i class="fa-solid fa-circle-check text-gold"></i> ĐẶT VÉ THÀNH CÔNG!</span>
+                <button class="btn-cgv-close" id="btnCloseSuccessModal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="cgv-modal-body" id="ticketSuccessBody">
+                <!-- Rendered Cinema Stub by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Authentication Modal (Login & Register) -->
+    <div class="cgv-modal-overlay" id="customerAuthModal">
+        <div class="cgv-modal-card auth-modal-card" style="max-width: 480px;">
+            <div class="cgv-modal-header">
+                <span class="m-title-cgv" id="authModalTitle">
+                    <i class="fa-solid fa-circle-user text-gold"></i> TÀI KHOẢN KHÁCH HÀNG
+                </span>
+                <button class="btn-cgv-close" onclick="closeCustomerAuthModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="cgv-modal-body" style="padding: 24px;">
+                <!-- Tab switch: Login vs Register -->
+                <div class="auth-modal-tabs">
+                    <button class="auth-tab-btn active" id="btnTabLogin" onclick="switchAuthTab('login')">
+                        <i class="fa-solid fa-right-to-bracket"></i> ĐĂNG NHẬP
+                    </button>
+                    <button class="auth-tab-btn" id="btnTabRegister" onclick="switchAuthTab('register')">
+                        <i class="fa-solid fa-user-plus"></i> ĐĂNG KÝ THÀNH VIÊN
+                    </button>
+                </div>
+
+                <!-- Form Login -->
+                <form id="formCustLogin" class="auth-form" onsubmit="handleCustomerLogin(event); return false;">
+                    <div class="auth-input-group">
+                        <label for="custLoginUser"><i class="fa-solid fa-user text-gold"></i> Tên đăng nhập (Username):</label>
+                        <div class="auth-input-wrap">
+                            <i class="fa-solid fa-user input-icon"></i>
+                            <input type="text" id="custLoginUser" class="auth-input" placeholder="Nhập username..." value="user" required autocomplete="username">
+                        </div>
+                    </div>
+                    <div class="auth-input-group">
+                        <label for="custLoginPass"><i class="fa-solid fa-key text-gold"></i> Mật khẩu (Password):</label>
+                        <div class="auth-input-wrap">
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <input type="password" id="custLoginPass" class="auth-input" placeholder="Nhập mật khẩu..." value="user123" required autocomplete="current-password">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-auth-submit" id="btnCustLoginSubmit">
+                        <i class="fa-solid fa-right-to-bracket"></i> ĐĂNG NHẬP THÀNH VIÊN
+                    </button>
+                    <div class="auth-switch-link-row">
+                        <span>Chưa có tài khoản thành viên?</span>
+                        <button type="button" class="btn-text-switch" onclick="switchAuthTab('register')">
+                            Đăng ký ngay <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="auth-hint-box" style="margin-top: 14px;">
+                        <i class="fa-solid fa-circle-info text-gold"></i> <strong>Tài khoản mẫu thử nghiệm:</strong><br>
+                        • Username: <code>user</code> | Mật khẩu: <code>user123</code> (Trần Anh Tuấn)
+                    </div>
+                </form>
+
+                <!-- Form Register -->
+                <form id="formCustRegister" class="auth-form" style="display: none;" onsubmit="handleCustomerRegister(event); return false;">
+                    <div class="auth-input-group">
+                        <label for="regFullName"><i class="fa-solid fa-id-card text-gold"></i> Họ và tên (*):</label>
+                        <input type="text" id="regFullName" class="auth-input" placeholder="Ví dụ: Lê Minh Trí" required>
+                    </div>
+                    <div class="form-grid-2" style="margin: 0; gap: 10px;">
+                        <div class="auth-input-group">
+                            <label for="regPhone"><i class="fa-solid fa-phone text-gold"></i> Số điện thoại (*):</label>
+                            <input type="tel" id="regPhone" class="auth-input" placeholder="0912 345 678" required>
+                        </div>
+                        <div class="auth-input-group">
+                            <label for="regEmail"><i class="fa-solid fa-envelope text-gold"></i> Email:</label>
+                            <input type="email" id="regEmail" class="auth-input" placeholder="tri.le@gmail.com">
+                        </div>
+                    </div>
+                    <div class="form-grid-2" style="margin: 0; gap: 10px;">
+                        <div class="auth-input-group">
+                            <label for="regUsername"><i class="fa-solid fa-user text-gold"></i> Tên đăng nhập (*):</label>
+                            <input type="text" id="regUsername" class="auth-input" placeholder="minhtri2026" required autocomplete="off">
+                        </div>
+                        <div class="auth-input-group">
+                            <label for="regPassword"><i class="fa-solid fa-key text-gold"></i> Mật khẩu (*):</label>
+                            <input type="password" id="regPassword" class="auth-input" placeholder="Tạo mật khẩu..." required autocomplete="new-password">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-auth-submit" id="btnCustRegisterSubmit" style="background: linear-gradient(135deg, #00E676 0%, #00B248 100%); color: #0A0E1A;">
+                        <i class="fa-solid fa-user-plus"></i> ĐĂNG KÝ TÀI KHOẢN NGAY
+                    </button>
+                    <div class="auth-switch-link-row">
+                        <span>Đã có tài khoản thành viên?</span>
+                        <button type="button" class="btn-text-switch" onclick="switchAuthTab('login')">
+                            Đăng nhập tại đây <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="shared.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

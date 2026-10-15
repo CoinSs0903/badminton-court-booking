@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ĐẶT LỊCH CẦU LÔNG 🏢 | Cổng Quản Lý Chủ Sân (Yard Owner)</title>
+    <link rel="icon" type="image/png" href="../logo.png">
+    <!-- Google Fonts: Be Vietnam Pro & Inter (Chuẩn nét tiếng Việt, dễ nhìn, hiện đại) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="owner.css">
+</head>
+<body class="cgv-theme">
+
+    <!-- ========================================================
+         MÀN HÌNH ĐĂNG NHẬP CHỦ SÂN (KHI CHƯA ĐĂNG NHẬP)
+         ======================================================== -->
+    <section id="ownerLoginSection" class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-icon-badge">
+                    <i class="fa-solid fa-building-user"></i>
+                </div>
+                <h1 class="auth-title">ĐĂNG NHẬP CHỦ SÂN</h1>
+                <p class="auth-subtitle">Cổng quản lý dành cho Đối tác Chủ Sân. Tài khoản và cụm sân do Quản Trị Viên (Admin) phân quyền.</p>
+            </div>
+
+            <form id="formOwnerLogin" class="auth-form" onsubmit="return false;">
+                <div class="auth-input-group">
+                    <label for="ownerLoginUser"><i class="fa-solid fa-user-tag text-gold"></i> Tên đăng nhập (Username):</label>
+                    <div class="auth-input-wrap">
+                        <i class="fa-solid fa-user input-icon"></i>
+                        <input type="text" id="ownerLoginUser" class="auth-input" placeholder="Ví dụ: owner1" value="owner1" required autocomplete="username">
+                    </div>
+                </div>
+
+                <div class="auth-input-group">
+                    <label for="ownerLoginPass"><i class="fa-solid fa-key text-gold"></i> Mật khẩu (Password):</label>
+                    <div class="auth-input-wrap">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="ownerLoginPass" class="auth-input" placeholder="Nhập mật khẩu..." value="owner123" required autocomplete="current-password">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-auth-submit" id="btnOwnerLoginSubmit">
+                    <i class="fa-solid fa-right-to-bracket"></i> ĐĂNG NHẬP QUẢN LÝ SÂN
+                </button>
+            </form>
+
+            <!-- Gợi ý tài khoản demo -->
+            <div class="auth-hint-box">
+                <i class="fa-solid fa-circle-info text-gold"></i> <strong>Tài khoản do Admin cấp sẵn:</strong><br>
+                • <code>owner1</code> / <code>owner123</code> (Quản lý Sân 1 & Sân 2)<br>
+                • <code>owner2</code> / <code>owner123</code> (Quản lý Sân 3 & Sân 4)<br>
+                • Hoặc tài khoản mới do Admin tạo tại Cổng Admin.
+            </div>
+
+            <div class="auth-footer-links">
+                <a href="/"><i class="fa-solid fa-arrow-left"></i> Quay lại Cổng Khách Hàng (User / Đặt Lịch)</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================
+         DASHBOARD CHỦ SÂN (HIỂN THỊ KHI ĐÃ ĐĂNG NHẬP THÀNH CÔNG)
+         ======================================================== -->
+    <div id="ownerDashboardApp" style="display: none;">
+        <!-- Header for OWNER -->
+        <header class="cgv-header">
+            <div class="cgv-container header-flex">
+                <!-- Brand Logo -->
+                <a href="../index.html" class="cgv-brand" title="Quay lại trang chủ">
+                    <div class="brand-emblem">
+                        <img src="../logo.png" alt="Logo" class="emblem-img">
+                    </div>
+                    <div class="brand-titles">
+                        <span class="brand-main">ĐẶT LỊCH<span class="text-cgv-red"> CẦU LÔNG</span></span>
+                        <span class="brand-cinema-tag text-gold"><i class="fa-solid fa-building-user"></i> CỔNG DÀNH CHO ĐỐI TÁC CHỦ SÂN</span>
+                    </div>
+                </a>
+
+                <!-- Session User Chip with Logout -->
+                <div class="user-session-chip">
+                    <span class="user-avatar text-gold"><i class="fa-solid fa-circle-user"></i></span>
+                    <div>
+                        <strong id="ownerLoggedNameDisplay">Nguyễn Văn Đạt</strong>
+                        <span style="color:#888; font-size:11px; margin-left:4px;">(Sân: <span class="text-gold" id="ownerLoggedCourtsBadge">C1,C2</span>)</span>
+                    </div>
+                    <button class="btn-logout" onclick="logoutOwnerAction()" title="Đăng xuất khỏi tài khoản chủ sân">
+                        <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất
+                    </button>
+                </div>
+
+                <!-- Actions -->
+                <div class="header-actions">
+                    <a href="/" class="btn-portal-link user" title="Xem Cổng Khách Hàng (User / Đặt Lịch)">
+                        <i class="fa-solid fa-users text-gold"></i> Cổng Khách Hàng (User)
+                    </a>
+                    <button class="btn-cgv-refresh" id="btnRefreshOwnerData" title="Làm mới dữ liệu từ máy chủ">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sub-Ribbon Banner -->
+        <div class="cgv-ribbon">
+            <div class="cgv-container ribbon-flex">
+                <div class="ribbon-text">
+                    <i class="fa-solid fa-shield-halved text-cgv-red"></i> BẢNG ĐIỀU KHIỂN CHỦ SÂN • QUẢN LÝ ĐƠN ĐẶT SÂN & CHECK-IN VÀO SÂN THỜI GIAN THỰC
+                </div>
+                <div class="ribbon-date-picker">
+                    <i class="fa-regular fa-clock text-gold"></i>
+                    <span id="ownerLiveTimeText">Hôm nay</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Workspace Container -->
+        <main class="cgv-main">
+            <div class="cgv-container">
+                <!-- Owner Banner Profile Header -->
+                <div class="owner-header-card">
+                    <div class="oh-left">
+                        <div class="oh-badge"><i class="fa-solid fa-building-user"></i> HỒ SƠ CHỦ SÂN PHỤ TRÁCH</div>
+                        <h2 class="oh-title" id="ownerFullNameDisplay">Nguyễn Văn Đạt (Chủ Sân 1 & Sân 2)</h2>
+                        <div class="oh-sub">
+                            <span><i class="fa-solid fa-phone"></i> Hotline: <strong id="ownerPhoneDisplay">0902 222 222</strong></span>
+                            <span class="sep">•</span>
+                            <span><i class="fa-solid fa-trophy text-gold"></i> Cụm sân phụ trách: <strong id="ownerCourtsListDisplay">Sân 1, Sân 2</strong></span>
+                        </div>
+                    </div>
+                    <div class="oh-right">
+                        <!-- Fast Check-in Box -->
+                        <div class="quick-checkin-box">
+                            <span class="qc-label"><i class="fa-solid fa-qrcode text-cgv-red"></i> Quét / Nhập Mã Check-in Khách:</span>
+                            <div class="qc-input-wrap">
+                                <input type="text" id="inputOwnerCheckInCode" placeholder="Ví dụ: BDM-261013-3680" class="qc-input">
+                                <button class="btn-qc-checkin" onclick="ownerCheckInAction()">Check-in Ngay</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Owner Stats Cards -->
+                <div class="stats-overview-grid">
+                    <div class="stat-box-card">
+                        <div class="sb-icon text-gold"><i class="fa-solid fa-coins"></i></div>
+                        <div class="sb-info">
+                            <span class="sb-label">Doanh Thu Cụm Sân</span>
+                            <span class="sb-number text-gold" id="statOwnerRevenue">0 ₫</span>
+                        </div>
+                    </div>
+                    <div class="stat-box-card">
+                        <div class="sb-icon text-cgv-red"><i class="fa-solid fa-ticket"></i></div>
+                        <div class="sb-info">
+                            <span class="sb-label">Lượt Đặt Sân</span>
+                            <span class="sb-number" id="statOwnerBookings">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-box-card">
+                        <div class="sb-icon text-green"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="sb-info">
+                            <span class="sb-label">Khách Đã Check-in</span>
+                            <span class="sb-number" id="statOwnerCheckedIn">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-box-card">
+                        <div class="sb-icon text-blue"><i class="fa-solid fa-layer-group"></i></div>
+                        <div class="sb-info">
+                            <span class="sb-label">Sân Phụ Trách</span>
+                            <span class="sb-number" id="statOwnerCourtCount">0 sân</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Courts Status Management Section -->
+                <div class="owner-section-box">
+                    <div class="osb-header">
+                        <div class="osb-title">
+                            <i class="fa-solid fa-sliders text-cgv-red"></i> Quản Lý Bật / Tắt Trạng Thái Sân Cầu Lông
+                        </div>
+                        <span class="osb-sub">Chủ sân có thể tạm tắt sân khi bảo trì hoặc dọn dẹp vệ sinh thảm</span>
+                    </div>
+                    <div class="owner-courts-grid" id="ownerCourtsListGrid">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- Bookings List Section -->
+                <div class="owner-section-box">
+                    <div class="osb-header flex-between">
+                        <div>
+                            <div class="osb-title">
+                                <i class="fa-solid fa-list-check text-cgv-red"></i> Danh Sách Đơn Đặt Sân Cần Phục Vụ
+                            </div>
+                            <span class="osb-sub">Dữ liệu đồng bộ trực tiếp khi có khách đặt từ Web Khách Hàng</span>
+                        </div>
+                        <!-- Filter pills -->
+                        <div class="booking-filter-pills">
+                            <button class="bf-pill active" onclick="filterOwnerBookings('ALL')">Tất cả</button>
+                            <button class="bf-pill" onclick="filterOwnerBookings('CONFIRMED')">Chờ Check-in</button>
+                            <button class="bf-pill" onclick="filterOwnerBookings('CHECKED_IN')">Đã Check-in</button>
+                            <button class="bf-pill" onclick="filterOwnerBookings('CANCELLED')">Đã Hủy</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="cgv-table">
+                            <thead>
+                                <tr>
+                                    <th>Mã Vé (QR)</th>
+                                    <th>Sân Thi Đấu</th>
+                                    <th>Ngày Chơi</th>
+                                    <th>Khung Giờ</th>
+                                    <th>Khách Hàng & SĐT</th>
+                                    <th>Dịch Vụ Kèm Theo</th>
+                                    <th>Tổng Tiền</th>
+                                    <th>Trạng Thái</th>
+                                    <th>Thao Tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ownerBookingsTableBody">
+                                <!-- Rendered by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Chi Tiết Vé Check-in -->
+    <div class="cgv-modal" id="modalTicketDetail">
+        <div class="cgv-modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-ticket-simple text-cgv-red"></i> CHI TIẾT VÉ ĐẶT SÂN</h3>
+                <button class="btn-close-modal" onclick="closeTicketDetailModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalTicketDetailBody">
+                <!-- Rendered dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../shared.js"></script>
+    <script src="owner.js"></script>
+</body>
+</html>

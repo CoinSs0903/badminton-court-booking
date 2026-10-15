@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ĐẶT LỊCH CẦU LÔNG 👑 | Cổng Quản Trị Hệ Thống (System Admin)</title>
+    <link rel="icon" type="image/png" href="../logo.png">
+    <!-- Google Fonts: Be Vietnam Pro & Inter (Chuẩn nét tiếng Việt, dễ nhìn, hiện đại) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body class="cgv-theme">
+
+    <!-- ========================================================
+         MÀN HÌNH ĐĂNG NHẬP ADMIN (KHI CHƯA ĐĂNG NHẬP)
+         ======================================================== -->
+    <section id="adminLoginSection" class="auth-wrapper">
+        <div class="auth-card admin-theme">
+            <div class="auth-header">
+                <div class="auth-icon-badge">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                <h1 class="auth-title">ĐĂNG NHẬP QUẢN TRỊ VIÊN</h1>
+                <p class="auth-subtitle">Cổng quản trị tối cao hệ thống ĐẶT LỊCH CẦU LÔNG. Quản lý toàn sàn và phân quyền tài khoản cho các Chủ Sân.</p>
+            </div>
+
+            <form id="formAdminLogin" class="auth-form" onsubmit="return false;">
+                <div class="auth-input-group">
+                    <label for="adminLoginUser"><i class="fa-solid fa-user-shield text-gold"></i> Tên đăng nhập Admin (Username):</label>
+                    <div class="auth-input-wrap">
+                        <i class="fa-solid fa-user input-icon"></i>
+                        <input type="text" id="adminLoginUser" class="auth-input" placeholder="Nhập tài khoản admin..." value="admin" required autocomplete="username">
+                    </div>
+                </div>
+
+                <div class="auth-input-group">
+                    <label for="adminLoginPass"><i class="fa-solid fa-key text-gold"></i> Mật khẩu (Password):</label>
+                    <div class="auth-input-wrap">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="adminLoginPass" class="auth-input" placeholder="Nhập mật khẩu admin..." value="admin123" required autocomplete="current-password">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-auth-submit" id="btnAdminLoginSubmit">
+                    <i class="fa-solid fa-shield-halved"></i> ĐĂNG NHẬP VÀO HỆ THỐNG
+                </button>
+            </form>
+
+            <!-- Gợi ý tài khoản demo -->
+            <div class="auth-hint-box">
+                <i class="fa-solid fa-lock text-gold"></i> <strong>Tài khoản Quản Trị Viên mặc định:</strong><br>
+                • Username: <code>admin</code><br>
+                • Mật khẩu: <code>admin123</code>
+            </div>
+
+            <div class="auth-footer-links">
+                <a href="/"><i class="fa-solid fa-arrow-left"></i> Quay lại Cổng Khách Hàng (User / Đặt Lịch)</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================
+         DASHBOARD QUẢN TRỊ VIÊN (HIỂN THỊ KHI ĐÃ ĐĂNG NHẬP)
+         ======================================================== -->
+    <div id="adminDashboardApp" style="display: none;">
+        <!-- Header for ADMIN -->
+        <header class="cgv-header">
+            <div class="cgv-container header-flex">
+                <!-- Brand Logo -->
+                <a href="../index.html" class="cgv-brand" title="Quay lại trang chủ">
+                    <div class="brand-emblem">
+                        <img src="../logo.png" alt="Logo" class="emblem-img">
+                    </div>
+                    <div class="brand-titles">
+                        <span class="brand-main">ĐẶT LỊCH<span class="text-cgv-red"> CẦU LÔNG</span></span>
+                        <span class="brand-cinema-tag text-gold"><i class="fa-solid fa-crown"></i> CỔNG QUẢN TRỊ VIÊN HỆ THỐNG (ADMIN)</span>
+                    </div>
+                </a>
+
+                <!-- Admin Navigation Quick Jump & Kebab Menu (Dấu 3 Chấm Dọc Để Thêm Thành Phần) -->
+                <nav class="cgv-nav" id="adminNavMenu">
+                    <a href="#sectionStats" class="nav-item active" id="navAdminStats">
+                        <i class="fa-solid fa-chart-pie"></i> <span>THỐNG KÊ</span>
+                    </a>
+
+                    <!-- Dấu 3 Chấm Dọc Để Thêm Thành Phần (Kebab Menu) -->
+                    <div class="admin-kebab-container" id="adminKebabContainer">
+                        <button type="button" class="btn-admin-kebab" id="btnAdminKebab" onclick="toggleAdminKebab(event)" title="Nhấn để mở menu: Thêm thành phần & Quản trị">
+                            <i class="fa-solid fa-ellipsis-vertical kebab-dots-icon"></i>
+                            <span class="kebab-label-text">Thêm thành phần</span>
+                            <i class="fa-solid fa-chevron-down kebab-caret"></i>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div class="admin-kebab-dropdown" id="adminKebabDropdown" style="display: none;">
+                            <div class="kebab-sec-title">
+                                <i class="fa-solid fa-circle-plus text-sport-green"></i> THÊM THÀNH PHẦN HỆ THỐNG
+                            </div>
+                            
+                            <div class="kebab-items-group">
+                                <button type="button" class="kebab-action-row" onclick="triggerKebabAction('createOwner')">
+                                    <div class="kab-badge bg-green"><i class="fa-solid fa-user-plus"></i></div>
+                                    <div class="kab-details">
+                                        <strong>Cấp Tài Khoản Chủ Sân Mới</strong>
+                                        <small>Bàn giao quyền quản lý cụm sân cho đối tác</small>
+                                    </div>
+                                    <i class="fa-solid fa-arrow-right kab-arrow"></i>
+                                </button>
+                                
+                                <button type="button" class="kebab-action-row" onclick="triggerKebabAction('addCourt')">
+                                    <div class="kab-badge bg-cyan"><i class="fa-solid fa-trophy"></i></div>
+                                    <div class="kab-details">
+                                        <strong>Thêm Cụm Sân Cầu Lông Mới</strong>
+                                        <small>Tạo cơ sở sân, địa chỉ & đơn giá vào hệ thống</small>
+                                    </div>
+                                    <i class="fa-solid fa-arrow-right kab-arrow"></i>
+                                </button>
+                                
+                                <button type="button" class="kebab-action-row" onclick="triggerKebabAction('addService')">
+                                    <div class="kab-badge bg-gold"><i class="fa-solid fa-boxes-stacked"></i></div>
+                                    <div class="kab-details">
+                                        <strong>Thêm Tiện Ích / Dịch Vụ Mới</strong>
+                                        <small>Bổ sung cầu thi đấu, thuê vợt, nước giải khát</small>
+                                    </div>
+                                    <i class="fa-solid fa-arrow-right kab-arrow"></i>
+                                </button>
+                                
+                                <button type="button" class="kebab-action-row" onclick="triggerKebabAction('addCustomer')">
+                                    <div class="kab-badge bg-rose"><i class="fa-solid fa-user-check"></i></div>
+                                    <div class="kab-details">
+                                        <strong>Thêm Tài Khoản Hội Viên Mới</strong>
+                                        <small>Tạo tài khoản khách hàng / thành viên VIP</small>
+                                    </div>
+                                    <i class="fa-solid fa-arrow-right kab-arrow"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="kebab-divider"></div>
+                            
+                            <div class="kebab-sec-title muted">
+                                <i class="fa-solid fa-layer-group text-sport-cyan"></i> CÁC THÀNH PHẦN QUẢN TRỊ
+                            </div>
+                            
+                            <div class="kebab-nav-links">
+                                <a href="#sectionStats" class="kebab-link" onclick="closeAdminKebab()">
+                                    <i class="fa-solid fa-chart-pie text-sport-green"></i> <span>Bảng Thống Kê & Doanh Thu</span>
+                                </a>
+                                <a href="#sectionOwners" class="kebab-link" onclick="closeAdminKebab()">
+                                    <i class="fa-solid fa-users-gear text-gold"></i> <span>Danh Sách Đối Tác Chủ Sân</span>
+                                </a>
+                                <a href="#sectionCustomers" class="kebab-link" onclick="closeAdminKebab()">
+                                    <i class="fa-solid fa-users text-sport-cyan"></i> <span>Quản Lý Tài Khoản Khách Hàng</span>
+                                </a>
+                                <a href="#sectionCourts" class="kebab-link" onclick="closeAdminKebab()">
+                                    <i class="fa-solid fa-layer-group text-pastel-rose"></i> <span>Giám Sát Cụm Sân Toàn Sàn</span>
+                                </a>
+                                <a href="#sectionAllBookings" class="kebab-link" onclick="closeAdminKebab()">
+                                    <i class="fa-solid fa-receipt text-green"></i> <span>Giám Sát Tất Cả Vé Đã Đặt</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Admin Session User Chip with Logout -->
+                <div class="user-session-chip">
+                    <span class="user-avatar text-gold"><i class="fa-solid fa-user-shield"></i></span>
+                    <div>
+                        <strong id="adminLoggedNameDisplay">Quản Trị Viên</strong>
+                        <span style="color:#10b981; font-size:11px; margin-left:4px;"><i class="fa-solid fa-circle-check"></i> ROOT</span>
+                    </div>
+                    <button class="btn-logout" onclick="logoutAdminAction()" title="Đăng xuất khỏi tài khoản Quản trị viên">
+                        <i class="fa-solid fa-right-from-bracket"></i> Đăng Xuất
+                    </button>
+                </div>
+
+                <!-- Actions -->
+                <div class="header-actions">
+                    <a href="/" class="btn-portal-link user" title="Xem Cổng Khách Hàng (User / Đặt Lịch)">
+                        <i class="fa-solid fa-users text-gold"></i> Cổng Khách Hàng (User)
+                    </a>
+                    <button class="btn-cgv-refresh" id="btnRefreshAdminData" title="Làm mới dữ liệu toàn hệ thống">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sub-Ribbon Banner -->
+        <div class="cgv-ribbon">
+            <div class="cgv-container ribbon-flex">
+                <div class="ribbon-text">
+                    <i class="fa-solid fa-crown text-gold"></i> TRUNG TÂM QUẢN TRỊ TOÀN DIỆN • PHÂN QUYỀN SÂN CHO CHỦ SÂN & GIÁM SÁT TOÀN BỘ GIAO DỊCH
+                </div>
+                <div class="ribbon-date-picker">
+                    <i class="fa-solid fa-shield-halved text-cgv-red"></i>
+                    <span>Quyền hạn: ROOT ADMINISTRATOR</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Workspace Container -->
+        <main class="cgv-main">
+            <div class="cgv-container">
+                <!-- Admin Banner Header Card -->
+                <div class="admin-header-card" id="sectionStats">
+                    <div class="ah-left">
+                        <div class="ah-badge"><i class="fa-solid fa-crown text-gold"></i> BẢNG ĐIỀU KHIỂN QUẢN TRỊ VIÊN CẤP CAO</div>
+                        <h2 class="ah-title">Giám Sát Hệ Thống & Cấp Tài Khoản Cho Chủ Sân Đối Tác</h2>
+                        <p class="ah-sub">Tạo tài khoản quản lý và bàn giao quyền phụ trách các cụm sân cho đối tác, theo dõi dòng tiền và tỷ lệ lấp đầy toàn sàn.</p>
+                    </div>
+                </div>
+
+                <!-- Admin 5-Stats KPI Grid -->
+                <div class="stats-overview-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <div class="stat-box-card admin-stat">
+                        <div class="sb-icon text-gold"><i class="fa-solid fa-user-shield"></i></div>
+                        <div class="sb-info">
+                            <span class="sb-label">Chủ Sân (Owners)</span>
+                            <span class="sb-number text-gold" id="statAdminOwnerCount">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-box-card admin-stat">
+                        <div class="sb-icon text-gold"><i class="fa-solid fa-users"></i></div>
+                        <div class="sb-info">
+                            <span class="sb-label">Khách Hàng (Members)</span>
+                            <span class="sb-number text-gold" id="statAdminCustomerCount">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-box-card admin-stat">
+                        <div class="sb-icon text-cgv-red"><i class="fa-solid fa-trophy"></i></div>
+                        <div class="sb-info">
+                            <span class="sb-label">Cụm Sân Cầu Lông</span>
+                            <span class="sb-number" id="statAdminCourtCount">0 sân</span>
+                        </div>
+                    </div>
+                    <div class="stat-box-card admin-stat">
+                        <div class="sb-icon text-green"><i class="fa-solid fa-receipt"></i></div>
+                        <div class="sb-info">
+                            <span class="sb-label">Vé Đã Đặt Toàn Sàn</span>
+                            <span class="sb-number" id="statAdminTotalBookings">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-box-card admin-stat">
+                        <div class="sb-icon text-gold"><i class="fa-solid fa-sack-dollar"></i></div>
+                        <div class="sb-info">
+                            <span class="sb-label">Tổng Doanh Thu</span>
+                            <span class="sb-number text-gold" id="statAdminTotalRevenue">0 ₫</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1. CREATE OWNER ACCOUNT FORM (CHỨC NĂNG CHÍNH CỦA ADMIN) -->
+                <div class="admin-form-card" id="sectionCreateOwner">
+                    <div class="afc-header">
+                        <div class="afc-title"><i class="fa-solid fa-user-plus text-cgv-red"></i> Cấp Tài Khoản Cho Chủ Sân Mới (Partner Owner Onboarding)</div>
+                        <p class="afc-desc">Nhập thông tin đối tác và chọn các cụm sân thi đấu bàn giao cho chủ sân quản trị</p>
+                    </div>
+
+                    <form id="formAdminCreateOwner" class="admin-create-form">
+                        <div class="form-grid-2">
+                            <div class="cgv-input-group">
+                                <label><i class="fa-solid fa-user-tag text-gold"></i> Tên đăng nhập (Username) (*):</label>
+                                <input type="text" id="adminNewUsername" class="cgv-input" placeholder="Ví dụ: owner3" required autocomplete="off">
+                            </div>
+                            <div class="cgv-input-group">
+                                <label><i class="fa-solid fa-key text-gold"></i> Mật khẩu khởi tạo (*):</label>
+                                <input type="password" id="adminNewPassword" class="cgv-input" placeholder="Nhập mật khẩu..." value="owner123" required autocomplete="new-password">
+                            </div>
+                        </div>
+
+                        <div class="form-grid-3">
+                            <div class="cgv-input-group">
+                                <label><i class="fa-solid fa-id-card"></i> Họ và tên chủ sân (*):</label>
+                                <input type="text" id="adminNewFullName" class="cgv-input" placeholder="Ví dụ: Phạm Minh Tuấn" required>
+                            </div>
+                            <div class="cgv-input-group">
+                                <label><i class="fa-solid fa-phone"></i> Số điện thoại:</label>
+                                <input type="tel" id="adminNewPhone" class="cgv-input" placeholder="0909 888 777" required>
+                            </div>
+                            <div class="cgv-input-group">
+                                <label><i class="fa-solid fa-envelope"></i> Email đối tác:</label>
+                                <input type="email" id="adminNewEmail" class="cgv-input" placeholder="tuan.owner@badminton.vn">
+                            </div>
+                        </div>
+
+                        <!-- Gán sân quản lý -->
+                        <div class="cgv-input-group">
+                            <label><i class="fa-solid fa-medal text-gold"></i> Bàn giao quyền quản lý các sân sau cho chủ sân này (*):</label>
+                            <div class="court-checkboxes-grid" id="adminCourtCheckboxes">
+                                <!-- Rendered by JS -->
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 10px;">
+                            <button type="submit" class="btn-admin-create-submit" id="btnSubmitCreateOwner">
+                                <i class="fa-solid fa-shield-halved"></i> CẤP TÀI KHOẢN & BÀN GIAO QUYỀN SÂN
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 2. DANH SÁCH CÁC CHỦ SÂN TRONG HỆ THỐNG -->
+                <div class="owner-section-box" id="sectionOwners">
+                    <div class="osb-header">
+                        <div class="osb-title"><i class="fa-solid fa-users text-gold"></i> Danh Sách Các Chủ Sân Đang Quản Trị Trên Sàn</div>
+                        <span class="osb-sub">Thông tin tài khoản đối tác do Admin cấp và các cụm sân được ủy quyền</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="cgv-table">
+                            <thead>
+                                <tr>
+                                    <th>Mã ID</th>
+                                    <th>Tên Đăng Nhập</th>
+                                    <th>Họ Và Tên</th>
+                                    <th>Liên Hệ</th>
+                                    <th>Các Sân Quản Lý</th>
+                                    <th>Ngày Cấp Quyền</th>
+                                    <th>Vai Trò</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminOwnersTableBody">
+                                <!-- Rendered by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 2.5 DANH SÁCH KHÁCH HÀNG / THÀNH VIÊN ĐÃ ĐĂNG KÝ -->
+                <div class="owner-section-box" id="sectionCustomers">
+                    <div class="osb-header">
+                        <div class="osb-title"><i class="fa-solid fa-users text-gold"></i> Quản Lý Tài Khoản Khách Hàng / Thành Viên (CGV Members)</div>
+                        <span class="osb-sub">Danh sách khách hàng đã đăng ký tài khoản tự động hoặc do hệ thống quản lý</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="cgv-table">
+                            <thead>
+                                <tr>
+                                    <th>Mã ID</th>
+                                    <th>Tên Đăng Nhập</th>
+                                    <th>Họ Và Tên</th>
+                                    <th>Số Điện Thoại</th>
+                                    <th>Email</th>
+                                    <th>Ngày Tham Gia</th>
+                                    <th>Vai Trò</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminCustomersTableBody">
+                                <!-- Rendered by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 3. GIÁM SÁT CÁC CỤM SÂN TOÀN HỆ THỐNG -->
+                <div class="owner-section-box" id="sectionCourts">
+                    <div class="osb-header">
+                        <div class="osb-title"><i class="fa-solid fa-layer-group text-cgv-red"></i> Giám Sát Toàn Bộ Cụm Sân Thi Đấu & Trạng Thái</div>
+                        <span class="osb-sub">Kiểm tra thông số kỹ thuật thảm, ánh sáng và trạng thái mở/bảo trì</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="cgv-table">
+                            <thead>
+                                <tr>
+                                    <th>Mã Sân</th>
+                                    <th>Tên Sân</th>
+                                    <th>Mặt Sân & Tiêu Chuẩn</th>
+                                    <th>Đèn Chiếu Sáng</th>
+                                    <th>Đơn Giá Cơ Bản</th>
+                                    <th>Trạng Thái</th>
+                                    <th>Chủ Sân Phụ Trách</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminCourtsTableBody">
+                                <!-- Rendered by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 4. GIÁM SÁT TOÀN BỘ ĐƠN ĐẶT SÂN TOÀN SÀN -->
+                <div class="owner-section-box" id="sectionAllBookings">
+                    <div class="osb-header flex-between">
+                        <div>
+                            <div class="osb-title"><i class="fa-solid fa-receipt text-green"></i> Giám Sát Toàn Bộ Vé Đặt Sân & Dòng Tiền Toàn Sàn</div>
+                            <span class="osb-sub">Nhật ký giao dịch thời gian thực từ Web Khách Hàng</span>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="cgv-table">
+                            <thead>
+                                <tr>
+                                    <th>Mã Vé</th>
+                                    <th>Sân Thi Đấu</th>
+                                    <th>Ngày Chơi</th>
+                                    <th>Khung Giờ</th>
+                                    <th>Khách Hàng</th>
+                                    <th>Tổng Tiền</th>
+                                    <th>Phương Thức</th>
+                                    <th>Trạng Thái</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminBookingsTableBody">
+                                <!-- Rendered by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ========================================================
+         MODALS: THÊM THÀNH PHẦN (POPUP THÊM SÂN, DỊCH VỤ, HỘI VIÊN)
+         ======================================================== -->
+    
+    <!-- Modal 1: Thêm Cụm Sân Cầu Lông Mới -->
+    <div class="admin-modal-overlay" id="modalAdminAddCourt" style="display: none;">
+        <div class="admin-modal-card">
+            <div class="amc-header">
+                <div class="amc-title"><i class="fa-solid fa-trophy text-sport-cyan"></i> Thêm Cụm Sân Cầu Lông Mới</div>
+                <button type="button" class="btn-amc-close" onclick="closeAdminModal('modalAdminAddCourt')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="amc-desc">Khai báo thông số kỹ thuật, địa chỉ và đơn giá cơ bản cho sân cầu lông mới đưa vào sàn</p>
+            
+            <form id="formAdminAddCourt" class="admin-modal-form" onsubmit="handleAdminAddCourtSubmit(event)">
+                <div class="cgv-input-group">
+                    <label><i class="fa-solid fa-tag text-gold"></i> Tên cụm sân thi đấu (*):</label>
+                    <input type="text" id="addCourtName" class="cgv-input" placeholder="Ví dụ: Sân Cầu Lông Kỳ Hòa Sân 6 (VIP)" required>
+                </div>
+                
+                <div class="form-grid-2">
+                    <div class="cgv-input-group">
+                        <label><i class="fa-solid fa-city text-sport-green"></i> Tỉnh / Thành Phố (*):</label>
+                        <select id="addCourtProvince" class="cgv-input" required>
+                            <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
+                            <option value="Hà Nội">Hà Nội</option>
+                            <option value="Đà Nẵng">Đà Nẵng</option>
+                            <option value="Bình Dương">Bình Dương</option>
+                        </select>
+                    </div>
+                    <div class="cgv-input-group">
+                        <label><i class="fa-solid fa-map-pin text-sport-green"></i> Quận / Huyện (*):</label>
+                        <input type="text" id="addCourtDistrict" class="cgv-input" placeholder="Ví dụ: Quận 10, Cầu Giấy..." required>
+                    </div>
+                </div>
+
+                <div class="cgv-input-group">
+                    <label><i class="fa-solid fa-location-dot text-sport-cyan"></i> Địa chỉ chi tiết (*):</label>
+                    <input type="text" id="addCourtAddress" class="cgv-input" placeholder="Ví dụ: 238 Đường 3/2, Phường 12" required>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="cgv-input-group">
+                        <label><i class="fa-solid fa-medal text-gold"></i> Phân cấp loại sân (*):</label>
+                        <select id="addCourtType" class="cgv-input" required>
+                            <option value="VIP">Sân VIP (Quốc Tế BWF)</option>
+                            <option value="PRO">Sân PRO (Chuyên Nghiệp)</option>
+                            <option value="STANDARD">Sân STANDARD (Phong Trào)</option>
+                        </select>
+                    </div>
+                    <div class="cgv-input-group">
+                        <label><i class="fa-solid fa-money-bill-wave text-green"></i> Giá thuê cơ bản (₫/giờ) (*):</label>
+                        <input type="number" id="addCourtBasePrice" class="cgv-input" placeholder="100000" min="20000" step="5000" required>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="cgv-input-group">
+                        <label><i class="fa-solid fa-layer-group"></i> Tiêu chuẩn thảm:</label>
+                        <input type="text" id="addCourtFloor" class="cgv-input" placeholder="Thảm Yonex 5.0mm BWF" value="Thảm Yonex 5.0mm BWF">
+                    </div>
+                    <div class="cgv-input-group">
+                        <label><i class="fa-solid fa-lightbulb"></i> Hệ thống đèn:</label>
+                        <input type="text" id="addCourtLighting" class="cgv-input" placeholder="Đèn LED chống lóa 350 Lux" value="Đèn LED chống lóa 350 Lux">
+                    </div>
+                </div>
+
+                <div class="amc-actions">
+                    <button type="button" class="btn-amc-cancel" onclick="closeAdminModal('modalAdminAddCourt')">Hủy bỏ</button>
+                    <button type="submit" class="btn-amc-submit bg-cyan">
+                        <i class="fa-solid fa-circle-check"></i> LƯU SÂN VÀO HỆ THỐNG
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2: Thêm Tiện Ích / Dịch Vụ Mới -->
+    <div class="admin-modal-overlay" id="modalAdminAddService" style="display: none;">
+        <div class="admin-modal-card">
+            <div class="amc-header">
+                <div class="amc-title"><i class="fa-solid fa-boxes-stacked text-gold"></i> Thêm Tiện Ích / Dịch Vụ Mới</div>
+                <button type="button" class="btn-amc-close" onclick="closeAdminModal('modalAdminAddService')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="amc-desc">Thêm các loại phụ kiện cầu, thuê vợt hoặc đồ uống vào danh mục cho khách hàng chọn khi check-in</p>
+            
+            <form id="formAdminAddService" class="admin-modal-form" onsubmit="handleAdminAddServiceSubmit(event)">
+                <div class="cgv-input-group">
+                    <label><i class="fa-solid fa-box-open text-gold"></i> Tên dịch vụ / phụ kiện (*):</label>
+                    <input type="text" id="addServiceName" class="cgv-input" placeholder="Ví dụ: Ống Cầu Lông Hải Yến Đỏ (12 quả)" required>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="cgv-input-group">
+                        <label><i class="fa-solid fa-layer-group text-sport-green"></i> Phân nhóm dịch vụ (*):</label>
+                        <select id="addServiceCategory" class="cgv-input" required>
+                            <option value="SHUTTLECOCK">🏸 Cầu Lông Thi Đấu</option>
+                            <option value="RACKET">🏸 Thuê Vợt Thi Đấu</option>
+                            <option value="DRINK">🥤 Nước Giải Khát & Thể Thao</option>
+                            <option value="ACCESSORY">🎗️ Quấn Cán & Phụ Kiện</option>
+                        </select>
+                    </div>
+                    <div class="cgv-input-group">
+                        <label><i class="fa-solid fa-tag text-sport-cyan"></i> Đơn vị tính (*):</label>
+                        <input type="text" id="addServiceUnit" class="cgv-input" placeholder="Ống / Cây / Chai..." value="Ống" required>
+                    </div>
+                </div>
+
+                <div class="cgv-input-group">
+                    <label><i class="fa-solid fa-coins text-green"></i> Đơn giá niêm yết (₫) (*):</label>
+                    <input type="number" id="addServicePrice" class="cgv-input" placeholder="240000" min="5000" step="5000" required>
+                </div>
+
+                <div class="amc-actions">
+                    <button type="button" class="btn-amc-cancel" onclick="closeAdminModal('modalAdminAddService')">Hủy bỏ</button>
+                    <button type="submit" class="btn-amc-submit bg-gold">
+                        <i class="fa-solid fa-plus-circle"></i> THÊM TIỆN ÍCH MỚI
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 3: Thêm Tài Khoản Khách Hàng / Hội Viên Mới -->
+    <div class="admin-modal-overlay" id="modalAdminAddCustomer" style="display: none;">
+        <div class="admin-modal-card">
+            <div class="amc-header">
+                <div class="amc-title"><i class="fa-solid fa-user-check text-sport-green"></i> Thêm Tài Khoản Hội Viên Mới</div>
+                <button type="button" class="btn-amc-close" onclick="closeAdminModal('modalAdminAddCustomer')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="amc-desc">Tạo tài khoản hội viên thân thiết trực tiếp từ phía Quản trị viên</p>
+            
+            <form id="formAdminAddCustomer" class="admin-modal-form" onsubmit="handleAdminAddCustomerSubmit(event)">
+                <div class="form-grid-2">
+                    <div class="cgv-input-group">
+                        <label><i class="fa-solid fa-id-card text-gold"></i> Họ và tên (*):</label>
+                        <input type="text" id="addCustFullName" class="cgv-input" placeholder="Ví dụ: Lê Hoàng Nam" required>
+                    </div>
+                    <div class="cgv-input-group">
+                        <label><i class="fa-solid fa-phone text-sport-green"></i> Số điện thoại (*):</label>
+                        <input type="tel" id="addCustPhone" class="cgv-input" placeholder="0918 888 999" required>
+                    </div>
+                </div>
+
+                <div class="cgv-input-group">
+                    <label><i class="fa-solid fa-envelope text-sport-cyan"></i> Địa chỉ email:</label>
+                    <input type="email" id="addCustEmail" class="cgv-input" placeholder="nam.le@gmail.com">
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="cgv-input-group">
+                        <label><i class="fa-solid fa-user text-gold"></i> Tên đăng nhập (Username) (*):</label>
+                        <input type="text" id="addCustUsername" class="cgv-input" placeholder="Ví dụ: namle99" required autocomplete="off">
+                    </div>
+                    <div class="cgv-input-group">
+                        <label><i class="fa-solid fa-key text-gold"></i> Mật khẩu khởi tạo (*):</label>
+                        <input type="password" id="addCustPassword" class="cgv-input" value="123456" required autocomplete="new-password">
+                    </div>
+                </div>
+
+                <div class="amc-actions">
+                    <button type="button" class="btn-amc-cancel" onclick="closeAdminModal('modalAdminAddCustomer')">Hủy bỏ</button>
+                    <button type="submit" class="btn-amc-submit bg-green">
+                        <i class="fa-solid fa-user-plus"></i> TẠO TÀI KHOẢN HỘI VIÊN
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="../shared.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

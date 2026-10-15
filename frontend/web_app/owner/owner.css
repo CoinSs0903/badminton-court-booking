@@ -1,0 +1,96 @@
+/* Styles specifically for Yard Owner Portal */
+
+.owner-selector-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #1e1e1e;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-dark);
+}
+
+.owner-selector-wrap label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.cgv-select-owner {
+    background: #141414;
+    color: #fff;
+    border: 1px solid var(--border-dark);
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    outline: none;
+}
+
+.cgv-select-owner:focus {
+    border-color: var(--cgv-gold);
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.booking-filter-pills {
+    display: flex;
+    gap: 6px;
+}
+
+.bf-pill {
+    background: #252525;
+    border: 1px solid var(--border-dark);
+    color: var(--text-muted);
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.bf-pill:hover {
+    color: #fff;
+    background: #333;
+}
+
+.bf-pill.active {
+    background: var(--cgv-red);
+    color: #fff;
+    border-color: var(--cgv-red);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-dark);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+}
+
+.modal-header h3 {
+    font-family: var(--font-cinema);
+    font-size: 18px;
+    color: #fff;
+}
+
+.btn-close-modal {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.btn-close-modal:hover {
+    color: #fff;
+}

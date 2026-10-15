@@ -1,0 +1,460 @@
+/* Styles specifically for System Admin Portal */
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.cgv-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cgv-nav a.nav-item {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 11.5px;
+    font-weight: 800;
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    letter-spacing: 0.3px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.cgv-nav a.nav-item:hover {
+    color: #fff;
+    border-color: rgba(0, 230, 118, 0.3);
+    background: rgba(0, 230, 118, 0.08);
+}
+
+.cgv-nav a.nav-item.active {
+    color: #0A0E1A;
+    background: linear-gradient(135deg, var(--sport-green) 0%, #00B248 100%);
+    border: 1px solid var(--sport-green);
+    font-weight: 900;
+    box-shadow: 0 4px 14px rgba(0, 230, 118, 0.4);
+}
+
+/* ==========================================================================
+   KEBAB MENU (DẤU 3 CHẤM DỌC ĐỂ THÊM THÀNH PHẦN)
+   ========================================================================== */
+.admin-kebab-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-admin-kebab {
+    background: linear-gradient(135deg, #1C1E29 0%, #13141D 100%);
+    border: 1px solid rgba(0, 230, 118, 0.35);
+    color: #FFFFFF;
+    padding: 7px 14px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-main);
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 0 10px rgba(0, 230, 118, 0.12);
+}
+
+.btn-admin-kebab:hover,
+.btn-admin-kebab.active {
+    background: linear-gradient(135deg, rgba(0, 230, 118, 0.25) 0%, rgba(0, 229, 255, 0.2) 100%);
+    border-color: var(--sport-green);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 230, 118, 0.35);
+}
+
+.kebab-dots-icon {
+    font-size: 15px;
+    color: var(--sport-green);
+    transition: transform 0.2s;
+}
+
+.btn-admin-kebab:hover .kebab-dots-icon {
+    transform: scale(1.15);
+}
+
+.kebab-label-text {
+    letter-spacing: 0.2px;
+}
+
+.kebab-caret {
+    font-size: 10px;
+    color: var(--text-muted);
+    transition: transform 0.25s ease;
+}
+
+.btn-admin-kebab.active .kebab-caret {
+    transform: rotate(180deg);
+}
+
+/* Dropdown Menu Container */
+.admin-kebab-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    min-width: 320px;
+    background: #171822;
+    border: 1px solid rgba(0, 230, 118, 0.3);
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 24px rgba(0, 230, 118, 0.15);
+    z-index: 1000;
+    animation: kebabDropdownFade 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes kebabDropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.kebab-sec-title {
+    font-size: 10px;
+    font-weight: 900;
+    color: var(--sport-green);
+    letter-spacing: 0.8px;
+    padding: 6px 10px 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.kebab-sec-title.muted {
+    color: var(--sport-cyan);
+}
+
+.kebab-items-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.kebab-action-row {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 10px 12px;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    font-family: var(--font-main);
+    transition: all 0.2s ease;
+}
+
+.kebab-action-row:hover {
+    background: rgba(0, 230, 118, 0.08);
+    border-color: rgba(0, 230, 118, 0.35);
+    transform: translateX(4px);
+}
+
+.kab-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.kab-badge.bg-green {
+    background: rgba(0, 230, 118, 0.15);
+    color: var(--sport-green);
+    border: 1px solid rgba(0, 230, 118, 0.3);
+}
+
+.kab-badge.bg-cyan {
+    background: rgba(0, 229, 255, 0.15);
+    color: var(--sport-cyan);
+    border: 1px solid rgba(0, 229, 255, 0.3);
+}
+
+.kab-badge.bg-gold {
+    background: rgba(255, 214, 0, 0.15);
+    color: var(--sport-gold);
+    border: 1px solid rgba(255, 214, 0, 0.3);
+}
+
+.kab-badge.bg-rose {
+    background: rgba(255, 82, 82, 0.15);
+    color: #FF5252;
+    border: 1px solid rgba(255, 82, 82, 0.3);
+}
+
+.kab-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.kab-details strong {
+    font-size: 12px;
+    font-weight: 800;
+    color: #FFFFFF;
+}
+
+.kab-details small {
+    font-size: 10.5px;
+    color: var(--text-muted);
+}
+
+.kab-arrow {
+    font-size: 11px;
+    color: var(--text-dark);
+    transition: all 0.2s;
+}
+
+.kebab-action-row:hover .kab-arrow {
+    color: var(--sport-green);
+    transform: translateX(2px);
+}
+
+.kebab-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 10px 4px;
+}
+
+.kebab-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.kebab-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 11.5px;
+    font-weight: 700;
+    transition: all 0.2s;
+}
+
+.kebab-link:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #FFFFFF;
+    transform: translateX(3px);
+}
+
+/* ==========================================================================
+   MODAL DIALOGS FOR ADDING COMPONENTS
+   ========================================================================== */
+.admin-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(6, 8, 14, 0.82);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2500;
+    padding: 20px;
+    animation: modalFadeIn 0.25s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.admin-modal-card {
+    background: #1B1B26;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 18px;
+    padding: 24px 28px;
+    width: 100%;
+    max-width: 540px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 24px rgba(0, 229, 255, 0.12);
+    animation: modalScaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@keyframes modalScaleUp {
+    from { transform: scale(0.92); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.amc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.amc-title {
+    font-size: 17px;
+    font-weight: 900;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.3px;
+}
+
+.btn-amc-close {
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: var(--text-muted);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.btn-amc-close:hover {
+    background: rgba(255, 82, 82, 0.2);
+    color: #FF5252;
+}
+
+.amc-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin: 0 0 18px 0;
+    line-height: 1.5;
+}
+
+.admin-modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.admin-modal-form .cgv-input {
+    background: #111218;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: #FFFFFF;
+    font-family: var(--font-main);
+    font-size: 12.5px;
+    font-weight: 500;
+    width: 100%;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.admin-modal-form .cgv-input:focus {
+    border-color: var(--sport-cyan);
+    box-shadow: 0 0 14px rgba(0, 229, 255, 0.3);
+}
+
+.amc-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-amc-cancel {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--text-muted);
+    padding: 9px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font-main);
+    transition: all 0.2s;
+}
+
+.btn-amc-cancel:hover {
+    border-color: rgba(255, 255, 255, 0.35);
+    color: #FFFFFF;
+}
+
+.btn-amc-submit {
+    border: none;
+    color: #0A0E1A;
+    font-family: var(--font-main);
+    font-size: 12.5px;
+    font-weight: 900;
+    padding: 9px 20px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.25s;
+    letter-spacing: 0.3px;
+}
+
+.btn-amc-submit.bg-cyan {
+    background: linear-gradient(135deg, var(--sport-cyan) 0%, #00B0FF 100%);
+    box-shadow: 0 4px 14px rgba(0, 229, 255, 0.35);
+}
+
+.btn-amc-submit.bg-gold {
+    background: linear-gradient(135deg, var(--sport-gold) 0%, #FFA000 100%);
+    box-shadow: 0 4px 14px rgba(255, 214, 0, 0.35);
+}
+
+.btn-amc-submit.bg-green {
+    background: linear-gradient(135deg, var(--sport-green) 0%, #00B248 100%);
+    box-shadow: 0 4px 14px rgba(0, 230, 118, 0.35);
+}
+
+.btn-amc-submit:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+/* Highlight animation when jumping to create owner */
+@keyframes highlightSectionPulse {
+    0% {
+        box-shadow: 0 0 0 rgba(0, 230, 118, 0);
+        border-color: rgba(255, 255, 255, 0.12);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(0, 230, 118, 0.5);
+        border-color: var(--sport-green);
+    }
+    100% {
+        box-shadow: 0 0 0 rgba(0, 230, 118, 0);
+        border-color: rgba(255, 255, 255, 0.12);
+    }
+}
+
+.admin-form-card.highlight-pulse {
+    animation: highlightSectionPulse 1.8s ease-in-out;
+}
