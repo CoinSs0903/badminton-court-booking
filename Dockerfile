@@ -1,18 +1,18 @@
-# Image Java JDK chuẩn nhẹ
-FROM openjdk:17-jdk-slim
+# Sử dụng Eclipse Temurin JDK 17 chính thức (chuẩn LTS của Eclipse Adoptium)
+FROM eclipse-temurin:17-jdk-jammy
 
 WORKDIR /app
 
-# Copy mã nguồn Backend & Frontend
+# Copy toàn bộ mã nguồn Backend và Frontend
 COPY backend/ ./backend/
 COPY frontend/ ./frontend/
 
-# Chuyển vào backend và biên dịch toàn bộ Java source
+# Chuyển vào thư mục backend và biên dịch tất cả file mã nguồn Java
 WORKDIR /app/backend
-RUN mkdir -p bin && javac -encoding UTF-8 -d bin -sourcepath src src/com/badminton/server/BadmintonHttpServer.java
+RUN mkdir -p bin && find src -name "*.java" > sources.txt && javac -encoding UTF-8 -d bin @sources.txt && rm sources.txt
 
-# Khai báo cổng
+# Khai báo cổng mặc định
 EXPOSE 8088
 
-# Lệnh chạy server (tự nhận diện cổng $PORT trên Cloud)
+# Lệnh chạy máy chủ Java (tự động nhận biến môi trường PORT từ Render)
 CMD ["java", "-cp", "bin", "com.badminton.server.BadmintonHttpServer"]
