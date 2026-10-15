@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=20261015_05">
 </head>
 <body class="cgv-theme">
 
@@ -52,13 +52,13 @@
                     </button>
                 </div>
                 <div id="custAuthBox" style="display: none;">
-                    <div class="user-session-chip customer">
-                        <span class="user-avatar text-gold"><i class="fa-solid fa-circle-user"></i></span>
-                        <div class="user-info-compact">
-                            <strong id="custSessionName">Trần Anh Tuấn</strong>
-                            <span class="spec-badge">THÀNH VIÊN</span>
+                    <div class="user-session-chip customer" style="display:inline-flex !important; align-items:center !important; gap:8px !important; padding:4px 8px 4px 12px !important; height:auto !important; min-height:36px !important; background:#1e1e24 !important; border:1px solid rgba(255,255,255,0.14) !important; border-radius:9999px !important; flex-shrink:0 !important; white-space:nowrap !important;">
+                        <span class="user-avatar text-gold" style="font-size:15px; display:inline-flex; align-items:center;"><i class="fa-solid fa-circle-user"></i></span>
+                        <div class="user-info-compact" style="display:inline-flex !important; align-items:center !important; gap:6px !important; white-space:nowrap !important;">
+                            <strong id="custSessionName" style="color:#ffffff !important; font-size:12px !important; font-weight:700 !important;">Trần Anh Tuấn</strong>
+                            <span class="spec-badge" style="background:rgba(0,230,118,0.15) !important; color:#00e676 !important; border:1px solid rgba(0,230,118,0.35) !important; font-size:9.5px !important; font-weight:800 !important; padding:1px 6px !important; border-radius:9999px !important; letter-spacing:0.4px !important; white-space:nowrap !important;">THÀNH VIÊN</span>
                         </div>
-                        <button class="btn-logout" onclick="logoutCustomerAction()" title="Đăng xuất tài khoản">
+                        <button class="btn-logout" onclick="logoutCustomerAction()" title="Đăng xuất tài khoản" style="background:rgba(255,82,82,0.15) !important; border:1px solid rgba(255,82,82,0.45) !important; color:#FF5252 !important; height:28px !important; width:28px !important; min-width:28px !important; padding:0 !important; border-radius:9999px !important; display:inline-flex !important; align-items:center !important; justify-content:center !important; font-size:12px !important; cursor:pointer !important; margin-left:4px !important;">
                             <i class="fa-solid fa-right-from-bracket"></i>
                         </button>
                     </div>
@@ -892,7 +892,7 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- Scripts -->
-    <script src="shared.js"></script>
-    <script src="app.js"></script>
+    <script src="shared.js?v=20261015_05"></script>
+    <script src="app.js?v=20261015_05"></script>
 </body>
 </html>

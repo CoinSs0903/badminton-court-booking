@@ -458,3 +458,72 @@
 .admin-form-card.highlight-pulse {
     animation: highlightSectionPulse 1.8s ease-in-out;
 }
+
+/* ==========================================================================
+   ADMIN SESSION USER CHIP & LOGOUT BUTTON (CHỐNG ĐÈ CHỮ HOÀN TOÀN)
+   ========================================================================== */
+.user-session-chip {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    background: #1E1E24 !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    padding: 3px 6px 3px 12px !important;
+    border-radius: 9999px !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+    height: 36px !important;
+    flex-shrink: 0 !important;
+}
+
+.user-session-chip .user-info-compact {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    white-space: nowrap !important;
+}
+
+.user-session-chip .spec-badge-root {
+    background: rgba(16, 185, 129, 0.15) !important;
+    color: #10b981 !important;
+    border: 1px solid rgba(16, 185, 129, 0.4) !important;
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    padding: 2px 7px !important;
+    border-radius: 9999px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    margin-left: 6px !important;
+    letter-spacing: 0.4px !important;
+}
+
+.user-session-chip .btn-logout {
+    background: rgba(255, 82, 82, 0.15) !important;
+    border: 1px solid rgba(255, 82, 82, 0.45) !important;
+    color: #FF5252 !important;
+    height: 28px !important;
+    width: auto !important;
+    min-width: 84px !important;
+    padding: 0 11px !important;
+    border-radius: 9999px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+    margin-left: 6px !important;
+}
+
+.user-session-chip .btn-logout:hover {
+    background: #FF5252 !important;
+    color: #FFFFFF !important;
+    border-color: #FF5252 !important;
+    box-shadow: 0 0 12px rgba(255, 82, 82, 0.5) !important;
+}
+
