@@ -100,6 +100,11 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 input, button, select, textarea {
     font-family: inherit;
 }
@@ -2543,9 +2548,8 @@ body.cgv-theme {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55), 0 0 15px rgba(255, 62, 62, 0.25);
 }
 
-/* Responsive */
+/* Responsive base - chi tiết toàn diện được đặt tại phần cuối file */
 @media (max-width: 768px) {
-    .cgv-nav { display: none; }
     .bottom-bar-inner { flex-direction: column; align-items: stretch; text-align: center; }
     .bb-right-action { justify-content: space-between; }
     .cgv-form-row { grid-template-columns: 1fr; }
@@ -4178,3 +4182,755 @@ body.cgv-theme {
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
     margin: 10px 0;
 }
+
+/* ==========================================================================
+   HỆ THỐNG GIAO DIỆN DI ĐỘNG TOÀN DIỆN (CHỐNG MẤT CHỮ / CHỐNG TRÀN VIỀN)
+   Mobile First Responsive System for Smartphones & Tablets
+   ========================================================================== */
+
+/* 1. Màn hình Tablet & Thiết bị vừa (<= 992px) */
+@media (max-width: 992px) {
+    .cgv-container {
+        padding: 0 16px;
+    }
+    .header-flex {
+        gap: 10px;
+    }
+    .brand-main {
+        font-size: 18px;
+    }
+    .cgv-nav {
+        gap: 3px;
+    }
+    .nav-item {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
+    .bf-grid {
+        grid-template-columns: 1fr;
+    }
+    .service-layers-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 2. Màn hình Điện thoại thông minh (<= 768px) */
+@media (max-width: 768px) {
+    body.cgv-theme {
+        font-size: 13.5px;
+        padding-bottom: 145px; /* Giữ khoảng trống đủ để thanh đặt vé dưới đáy không che chữ */
+    }
+
+    .cgv-container {
+        padding: 0 12px;
+    }
+
+    /* Top bar */
+    .cgv-topbar {
+        font-size: 10.5px;
+        padding: 4px 0;
+    }
+    .topbar-flex {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3px;
+    }
+    .topbar-right {
+        display: none;
+    }
+
+    /* Header chính */
+    .cgv-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        padding: 4px 0;
+    }
+    .header-flex {
+        height: auto;
+        min-height: 52px;
+        padding: 6px 0;
+        flex-wrap: wrap;
+        row-gap: 8px;
+        column-gap: 6px;
+    }
+
+    /* Brand Logo */
+    .cgv-brand {
+        gap: 8px;
+        flex-shrink: 0;
+    }
+    .brand-emblem {
+        width: 32px;
+        height: 32px;
+    }
+    .brand-main {
+        font-size: 15px;
+        letter-spacing: 0.2px;
+    }
+    .brand-cinema-tag {
+        font-size: 8px;
+        letter-spacing: 0.5px;
+    }
+
+    /* Header Actions (Đăng nhập, Đăng ký, Cổng đối tác) */
+    .header-actions {
+        gap: 5px;
+        margin-left: auto;
+        flex-wrap: nowrap;
+    }
+    .cust-auth-btn-group {
+        gap: 4px;
+        display: flex;
+    }
+    .btn-customer-auth {
+        font-size: 11px;
+        padding: 5px 9px;
+        gap: 4px;
+        white-space: nowrap;
+    }
+    .btn-portal-link {
+        font-size: 11px;
+        padding: 5px 8px;
+        gap: 4px;
+        white-space: nowrap;
+    }
+    .btn-cgv-refresh {
+        width: 30px;
+        height: 30px;
+        font-size: 11px;
+    }
+    .user-session-chip {
+        padding: 4px 8px;
+        gap: 6px;
+    }
+    .user-info-compact strong {
+        font-size: 11.5px;
+        max-width: 85px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+    }
+
+    /* Navigation Tabs trên Mobile: Luôn hiển thị 2 tab Đặt Lịch & Vé Của Tôi */
+    .cgv-nav {
+        order: 3;
+        width: 100%;
+        display: flex !important;
+        justify-content: space-around;
+        background: #14141A;
+        border-radius: var(--radius-sm);
+        padding: 4px;
+        margin-top: 2px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .nav-item {
+        flex: 1;
+        justify-content: center;
+        font-size: 12px;
+        padding: 7px 10px;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    /* Ribbon thông báo */
+    .cgv-ribbon {
+        padding: 6px 0;
+    }
+    .ribbon-flex {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+    }
+    .ribbon-text {
+        white-space: normal;
+        line-height: 1.4;
+        font-size: 11px;
+        text-align: center;
+        overflow: visible;
+        text-overflow: clip;
+    }
+    .ribbon-date-picker {
+        width: 100%;
+        justify-content: space-between;
+        font-size: 11px;
+    }
+    .cgv-date-input {
+        flex: 1;
+        max-width: 160px;
+    }
+
+    /* Hub Bộ Lọc & Tìm Kiếm Sân (Trang 1) */
+    .booking-filter-hub-card {
+        padding: 12px 10px;
+        border-radius: 12px;
+    }
+    .bf-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    .bf-label {
+        font-size: 11.5px;
+    }
+    .bf-select {
+        height: 38px;
+        font-size: 12px;
+        padding: 0 8px 0 28px;
+    }
+    .bf-select-icon {
+        left: 9px;
+        font-size: 11px;
+    }
+    .bf-search-input {
+        height: 38px;
+        font-size: 12px;
+        padding: 0 32px 0 30px;
+    }
+    .bf-search-icon {
+        left: 9px;
+    }
+    .bf-footer-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding-top: 10px;
+    }
+    .bf-stats {
+        justify-content: space-between;
+        width: 100%;
+    }
+    .bf-stat-badge {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+    .bf-active-summary {
+        font-size: 10.5px;
+    }
+    .bf-quick-jumps {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 6px;
+    }
+    .bf-jump-btn, .bf-reset-btn {
+        width: 100%;
+        justify-content: center;
+        font-size: 11.5px;
+        padding: 7px 10px;
+    }
+
+    /* Dải Chọn Ngày Thi Đấu Hàng Ngang (Date Carousel) */
+    .date-carousel-card {
+        padding: 12px 10px;
+        border-radius: 12px;
+    }
+    .date-carousel-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    .date-carousel-title-group {
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+    }
+    .date-carousel-heading {
+        font-size: 14px;
+    }
+    .btn-interactive-datepicker {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+    .date-carousel-actions {
+        width: 100%;
+    }
+    .date-shortcuts-row {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 4px;
+        gap: 5px;
+        scrollbar-width: none;
+        width: 100%;
+    }
+    .date-shortcuts-row::-webkit-scrollbar {
+        display: none;
+    }
+    .btn-date-shortcut {
+        font-size: 11px;
+        padding: 5px 8px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .date-nav-arrows {
+        display: none;
+    }
+    .date-tab-card {
+        width: 68px;
+        min-width: 68px;
+        height: 78px;
+        padding: 6px 4px;
+    }
+    .date-tab-card .dt-day {
+        font-size: 19px;
+    }
+    .date-tab-card .dt-dow {
+        font-size: 10px;
+    }
+
+    /* Mode selector (Ngày đơn vs Định kỳ) */
+    .mode-pills-wrap {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+    }
+    .btn-mode-pill {
+        width: 100%;
+        font-size: 11.5px;
+        padding: 7px 10px;
+        white-space: normal;
+        text-align: center;
+        line-height: 1.3;
+        border-radius: 8px;
+    }
+    .recurring-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+    }
+    .recurring-weekdays-row {
+        gap: 5px;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 4px;
+    }
+    .rc-day-checkbox {
+        font-size: 11px;
+        padding: 4px 8px;
+        white-space: nowrap;
+    }
+    .recurring-duration-row {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .rc-dur-label {
+        width: 100%;
+        font-size: 11px;
+    }
+    .rc-radio-label {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+
+    /* Card Xác Nhận Chuyển Sang Trang 2 */
+    .page1-proceed-card {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+        padding: 14px 12px;
+        gap: 10px;
+    }
+    .p1-date-headline {
+        font-size: 15px;
+        word-break: break-word;
+    }
+    .p1-filter-sub {
+        font-size: 11px;
+        line-height: 1.4;
+    }
+    .btn-proceed-to-slots {
+        width: 100%;
+        font-size: 12.5px;
+        padding: 11px 12px;
+        justify-content: center;
+        white-space: normal;
+        line-height: 1.3;
+    }
+
+    /* Trang 2: Tiêu đề & Tóm tắt ngày/sân */
+    .page2-header-flex {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    .btn-back-to-p1 {
+        width: 100%;
+        justify-content: center;
+        font-size: 11.5px;
+        padding: 7px 10px;
+    }
+    .page2-summary-tags {
+        width: 100%;
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+    .p2-tag-date, .p2-tag-loc, .p2-tag-type {
+        font-size: 10.5px;
+        padding: 3px 7px;
+    }
+    .cinema-filter-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    .filter-title {
+        font-size: 13.5px;
+    }
+    .legend-inline {
+        flex-wrap: wrap;
+        gap: 5px;
+        font-size: 10.5px;
+    }
+
+    /* Thanh lọc lớp ca */
+    .session-filter-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+    }
+    .session-filter-pills {
+        overflow-x: auto;
+        padding-bottom: 4px;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    .session-filter-pills::-webkit-scrollbar {
+        display: none;
+    }
+    .btn-session-pill {
+        white-space: nowrap;
+        flex-shrink: 0;
+        font-size: 11px;
+        padding: 5px 9px;
+    }
+
+    /* Lưới Slot giờ thi đấu */
+    .hall-layers-container {
+        padding: 10px;
+        gap: 8px;
+    }
+    .session-slots-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+        padding: 8px 6px !important;
+    }
+    .st-slot-btn {
+        padding: 8px 4px !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+        gap: 2px !important;
+    }
+    .st-slot-btn .st-time {
+        font-size: 11.5px !important;
+        font-weight: 700;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .st-slot-btn .st-price {
+        font-size: 11px !important;
+        white-space: nowrap;
+    }
+    .st-slot-btn .st-status {
+        font-size: 9.5px !important;
+        white-space: nowrap;
+    }
+    .st-slot-btn.peak::after {
+        font-size: 7.5px;
+        padding: 1px 4px;
+        top: -6px;
+        right: 4px;
+    }
+
+    /* Thẻ Sân & Thông tin chi tiết */
+    .court-card-header {
+        padding: 12px;
+        gap: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .court-card-body {
+        padding: 10px;
+    }
+    .court-name {
+        font-size: 15px;
+        word-break: break-word;
+    }
+    .court-specs-chips {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    .spec-chip {
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+
+    /* Dịch vụ tiện ích (Combos) */
+    .cgv-combos-section {
+        padding: 16px 12px;
+        margin-top: 18px;
+    }
+    .section-title-cgv {
+        font-size: 14px;
+    }
+    .section-sub-cgv {
+        font-size: 11px;
+    }
+    .service-layers-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .combo-layer-card {
+        padding: 12px;
+    }
+    .combo-title {
+        font-size: 13px;
+    }
+    .combo-item-row {
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 8px 0;
+    }
+
+    /* Thanh Sticky Bottom Bar dưới cùng */
+    .cgv-bottom-bar {
+        padding: 10px 0;
+    }
+    .bottom-bar-inner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    .bb-left-info {
+        text-align: left;
+    }
+    .bb-movie-name {
+        font-size: 13px;
+        word-break: break-word;
+    }
+    .bb-meta {
+        font-size: 11px;
+        gap: 4px;
+    }
+    .bb-right-action {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        gap: 10px;
+    }
+    .bb-price-wrap {
+        text-align: left;
+    }
+    .bb-price-val {
+        font-size: 18px;
+    }
+    .btn-cgv-primary {
+        flex: 1;
+        max-width: 180px;
+        padding: 9px 12px;
+        font-size: 12.5px;
+        justify-content: center;
+    }
+
+    /* Cửa sổ Popup / Modal (Đặt vé, Đăng nhập, Đăng ký, QR) */
+    .cgv-modal-overlay {
+        padding: 8px;
+    }
+    .cgv-modal-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: 94vh;
+        border-radius: 12px;
+    }
+    .cgv-modal-header {
+        padding: 12px 14px;
+    }
+    .m-title-cgv {
+        font-size: 13.5px;
+        gap: 6px;
+        word-break: break-word;
+    }
+    .cgv-modal-body {
+        padding: 14px 12px;
+        gap: 12px;
+    }
+
+    /* Vé xem trước trong modal */
+    .cinema-ticket-preview {
+        flex-direction: column;
+    }
+    .ct-left {
+        padding: 12px 10px;
+    }
+    .ct-brand {
+        font-size: 9.5px;
+    }
+    .ct-title {
+        font-size: 14px;
+        word-break: break-word;
+    }
+    .ct-info-row {
+        font-size: 11.5px;
+    }
+    .ct-divider {
+        width: 100%;
+        height: 1px;
+        border-left: none;
+        border-top: 1px dashed rgba(255, 255, 255, 0.18);
+    }
+    .ct-divider .notch {
+        display: none;
+    }
+    .ct-right {
+        width: 100%;
+        padding: 8px 12px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background: #16161C;
+    }
+    .ct-price-num {
+        font-size: 17px;
+    }
+
+    /* Form Đặt vé & Thanh toán */
+    .checkout-member-callout {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 10px;
+        gap: 8px;
+    }
+    .cm-callout-text {
+        font-size: 11px;
+        min-width: 0;
+    }
+    .cm-callout-actions {
+        width: 100%;
+        gap: 6px;
+    }
+    .btn-cm-action {
+        flex: 1;
+        justify-content: center;
+        font-size: 11px;
+    }
+    .cgv-form-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    .cgv-payment-selector {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+    .pay-inner {
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 4px 6px;
+        gap: 8px;
+    }
+    .cgv-qr-box {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+        padding: 10px;
+    }
+    .qr-bank-details {
+        align-items: center;
+        font-size: 11.5px;
+    }
+    .btn-cgv-submit {
+        font-size: 13px;
+        padding: 12px 10px;
+        word-break: break-word;
+        text-align: center;
+    }
+
+    /* Modal Đăng nhập / Đăng ký Khách hàng */
+    .auth-modal-tabs {
+        gap: 4px;
+    }
+    .auth-modal-tab-btn {
+        font-size: 11.5px;
+        padding: 7px;
+    }
+    .auth-form-card {
+        padding: 14px 10px;
+    }
+
+    /* Giao diện Chủ Sân (Owner) & Admin trên Mobile */
+    .owner-header-card, .admin-header-card {
+        padding: 14px 12px;
+    }
+    .oh-title, .ah-title {
+        font-size: 17px;
+        word-break: break-word;
+    }
+    .oh-sub {
+        font-size: 11.5px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    .stats-overview-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    .stat-box-card {
+        padding: 10px;
+    }
+    .sb-icon {
+        font-size: 18px;
+    }
+    .sb-number {
+        font-size: 16px;
+    }
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .cgv-table th, .cgv-table td {
+        font-size: 11px;
+        padding: 6px 8px;
+        white-space: nowrap;
+    }
+}
+
+/* 3. Tinh chỉnh riêng cho màn hình điện thoại siêu nhỏ (<= 380px) */
+@media (max-width: 380px) {
+    .brand-main {
+        font-size: 13.5px;
+    }
+    .brand-emblem {
+        width: 28px;
+        height: 28px;
+    }
+    .btn-customer-auth {
+        font-size: 10px;
+        padding: 3px 6px;
+    }
+    .btn-portal-link {
+        font-size: 10px;
+        padding: 3px 5px;
+    }
+    .nav-item {
+        font-size: 11px;
+        padding: 5px;
+    }
+    .date-tab-card {
+        width: 62px;
+        min-width: 62px;
+        height: 74px;
+    }
+    .date-tab-card .dt-day {
+        font-size: 17px;
+    }
+    .bf-selects-row {
+        flex-direction: column;
+        gap: 6px;
+    }
+}
+
